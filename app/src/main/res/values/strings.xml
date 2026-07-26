@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">喝了么</string>
+    <string name="channel_name">喝水提醒</string>
+    <string name="channel_description">定时提醒你喝水</string>
+    <string name="reminder_notification_title">该喝水了</string>
+    <string name="reminder_notification_text">建议饮用 %d ml 水</string>
+
+    <string-array name="interval_reminder_titles">
+        <item>该喝水啦～</item>
+        <item>嗨，喝水时间到！</item>
+        <item>别忘了喝水哦～</item>
+        <item>来一杯水吧！</item>
+        <item>喝口水歇一歇～</item>
+        <item>水水时间到！</item>
+        <item>该补充水分啦～</item>
+        <item>喝水喝水，身体健康！</item>
+        <item>乖，去喝杯水～</item>
+        <item>滴滴！喝水提醒～</item>
+    </string-array>
+
+    <string-array name="small_cycle_reminder_titles">
+        <item>你真的打算不喝水吗？</item>
+        <item>水杯都等急了！</item>
+        <item>再不喝水要干成标本啦～</item>
+        <item>我盯着你呢，快去喝水！</item>
+        <item>你忍心让自己渴着吗？</item>
+        <item>别装没看见，喝水！</item>
+        <item>老板不在，偷偷喝口水吧～</item>
+        <item>你已经很久没喝水了哦</item>
+        <item>水在召唤你，听到了吗？</item>
+        <item>喝水！现在！立刻！马上！</item>
+        <item>你比仙人掌还耐旱吗？</item>
+        <item>再不喝我就一直弹哦～</item>
+    </string-array>
+    <string name="service_notification_title">喝水提醒服务</string>
+    <string name="service_notification_text">正在运行中，保持水分摄入</string>
+    <string name="btn_start_reminder">开启提醒</string>
+    <string name="btn_stop_reminder">关闭提醒</string>
+    <string name="btn_quick_drink">快捷喝水</string>
+    <string name="btn_custom_drink">自定义量</string>
+    <string name="btn_records">喝水记录</string>
+    <string name="btn_person_types">人群类型</string>
+    <string name="today_progress">今日饮水进度</string>
+    <string name="ml_unit">ml</string>
+    <string name="goal_reached">今日目标已达成</string>
+    <string name="edit">编辑</string>
+    <string name="delete">删除</string>
+    <string name="back">返回</string>
+    <string name="open_drawer">打开侧边栏</string>
+    <string name="add_reminder_time">添加提醒时间</string>
+    <string name="add_person_type">添加人群类型</string>
+    <string name="auto_start_guide_message">为了确保喝水提醒能正常工作，请在系统设置中允许本应用自启动。\n\n不同品牌手机路径可能不同，一般在：\n设置 → 应用管理 → 喝水提醒 → 自启动管理</string>
+    <string name="reminder_time">提醒时间</string>
+    <string name="reminder_amount">每次喝水量</string>
+    <string name="reminder_label">提醒标签（可选）</string>
+    <string name="reminder_label_hint">如：早起喝水、午休补水</string>
+    <string name="fixed_reminder_title">%s · 该喝水了</string>
+    <string name="save">保存</string>
+    <string name="widget_small_desc">喝水进度小组件 - 显示今日饮水进度</string>
+    <string name="widget_large_desc">喝水进度大组件 - 显示进度并可快速记录喝水</string>
+    <string name="update_downloading">正在下载更新...</string>
+    <string name="update_downloading_title">下载更新</string>
+    <string name="update_download_success">下载完成，点击安装</string>
+    <string name="update_download_failed">下载失败</string>
+    <string name="update_checking">正在检查更新...</string>
+    <string name="update_already_latest">已经是最新版本</string>
+    <string name="update_new_version">发现新版本</string>
+    <string name="update_now">立即更新</string>
+    <string name="update_later">稍后再说</string>
+    <string name="update_check_failed">检查更新失败</string>
+    <string name="check_update">检查更新</string>
+
+    <!-- 关于页面 -->
+    <string name="about_title">关于</string>
+    <string name="about_features">- 定时喝水提醒，养成健康饮水习惯\n- 多种人群类型，灵活设置每日目标\n- 自定义固定时间提醒，适配个人作息\n- 通知栏快捷打卡，无需解锁手机\n- 间隔循环提醒，持续关怀不遗漏\n- 喝水记录与统计洞察，追踪饮水数据\n- 桌面小组件，随时查看今日进度\n- 数据导出 CSV，方便个人分析\n- 免打扰时段设置，会议期间不打扰</string>
+    <string name="about_version_history">v2.1.2 (2026-07-26)\n修复大周期闹钟调度竞态条件：cancel与schedule并发导致闹钟被误取消\n修复达标后闹钟链断裂：达标打卡后仍调度下次提醒\n加强关键调度路径日志输出，便于排查通知问题\n\nv2.1.1 (2026-07-25)\n修复通知栏快捷打卡「喝了200ml/300ml」后仍会触发小周期提醒的问题\n快捷打卡后即时更新最后饮水时间、取消小周期闹钟并重新调度下一次主提醒\n\nv2.1.0 (2026-07-25)\n新增「喝水鼓励」开关，可控制喝水后是否显示鼓励弹窗\n侧边栏改为可滚动布局，解决全屏提醒预览等入口被挤掉的问题\n记录页支持左右滑动切换按日/按月/趋势/统计四个视图\n优化自动启动引导：直接跳转系统设置，由用户手动在「设置 → 应用 → 自启动」中允许\n新增首次安装引导提示，提醒开启喝水提醒与自动启动\n关于页面新增开发者信息按钮，点击跳转 GitHub\n修复全屏弹窗记录喝水后仍进入小周期提醒的问题\n修复长按打卡不显示鼓励弹窗的问题\n\nv2.0.4 (2026-07-24)\n侧边栏新增「全屏提醒」独立开关\n关闭后通知仅保留通知栏提醒，不再启动全屏提醒Activity\n全屏提醒预览入口在关闭时提示用户\n\nv2.0.3 (2026-07-24)\n侧边栏「喝水提醒」全局开关完善：关闭后所有提醒调度与通知均被拦截\n提醒调度、Boot 重启恢复、打卡后重调度均尊重全局开关状态\n\nv2.0.2 (2026-07-24)\n应用主题色统一为黑白配色\n喝水选择弹窗 Chip 与确认按钮改为黑白风格\n所有 Switch 开关颜色改为黑色\n关于页新版本提示卡片配色优化\n版本历史补充 v2.0 / v2.0.1 / v2.0.2\n\nv2.0.1 (2026-07-24)\n重新设计桌面小组件为黑白极简风格\n\nv2.0 (2026-07-24)\n全新黑白极简界面设计\n记录页支持按日/按月/趋势/统计四视图切换\n月度日历网格与汇总统计\n全屏提醒预览改为白色背景并支持 GIF 与鼓励文案\n提醒页左滑删除提示语仅首次显示\n长按首页圆圈快速打卡\n\nv1.3.2 (2026-07-23)\n新增隐私说明页面\n\nv1.3.1 (2026-07-23)\n新增魅族、一加厂商自启动适配\n\nv1.3.0 (2026-07-23)\n新增关于页面（版本信息、功能介绍、版本历史、更新检测）\n\nv1.2.2 (2026-07-23)\n代码优化与重构：重命名服务类、数据库迁移策略、合并重复代码\n\nv1.2.1 (2026-07-23)\n新增通知栏快捷打卡、数据导出 CSV 功能\n\nv1.2.0 (2026-07)\n新增统计洞察、Widget 桌面小组件、应用更新检测\n\nv1.1.0\n通知声音修复、移除前台服务常驻通知、Android 12+ 精确闹钟适配\n\nv1.0.0\n首次发布：喝水提醒、人群管理、记录查看</string>
+    <string name="update_available_hint">有新版本 %s 可用，点击查看详情</string>
+    <string name="update_not_available">已是最新版本</string>
+
+    <!-- 隐私说明 -->
+    <string name="privacy_title">隐私与数据</string>
+    <string name="privacy_subtitle">本地存储 · 零数据风险</string>
+    <string name="privacy_intro">喝水提醒是一款完全离线运行的轻量应用。我们对您的隐私和数据安全负责：</string>
+    <string name="privacy_item_1">所有数据仅保存在本机数据库中，绝不上传至任何服务器</string>
+    <string name="privacy_item_2">不申请通讯录、相册、位置等无关权限</string>
+    <string name="privacy_item_3">不接入任何第三方统计、追踪或广告 SDK</string>
+    <string name="privacy_item_4">应用更新检查直接调用 Gitee / GitHub 官方 API，仅读取版本号</string>
+    <string name="privacy_item_5">卸载应用即彻底清除全部数据，无残留</string>
+    <string name="privacy_conclusion">您的喝水记录、人群设置、提醒时间，始终只属于您自己。</string>
+    <string name="privacy_footnote">如有任何疑问，欢迎通过项目仓库反馈。</string>
+</resources>
