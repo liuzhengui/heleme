@@ -1,0 +1,261 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/screen_background"
+    android:clipToPadding="false"
+    android:fillViewport="true"
+    android:paddingBottom="16dp"
+    android:scrollbars="none">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="20dp">
+
+        <!-- 报头：日期问候 + 连续达标 -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:baselineAligned="false"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tvDateLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:letterSpacing="0.2"
+                    android:text="Wednesday · Mar 12"
+                    android:textAllCaps="true"
+                    android:textColor="#6B6B6B"
+                    android:textSize="10sp" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="bottom"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/tvGreetingMain"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:includeFontPadding="false"
+                        android:text="Good"
+                        android:textColor="#111111"
+                        android:textSize="38sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/tvGreetingSub"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="6dp"
+                        android:includeFontPadding="false"
+                        android:text="morning"
+                        android:textColor="#6B6B6B"
+                        android:textSize="18sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="end"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:letterSpacing="0.2"
+                    android:text="连续"
+                    android:textAllCaps="true"
+                    android:textColor="#6B6B6B"
+                    android:textSize="10sp" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="bottom"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/tvStreakDays"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:includeFontPadding="false"
+                        android:text="00"
+                        android:textColor="#111111"
+                        android:textSize="28sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="2dp"
+                        android:includeFontPadding="false"
+                        android:text="d"
+                        android:textColor="#6B6B6B"
+                        android:textSize="18sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+
+        <!-- 进度环 -->
+        <com.zhengui.waterreminder.ui.widget.CircularProgressRing
+            android:id="@+id/progressRing"
+            android:layout_width="220dp"
+            android:layout_height="220dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="24dp"
+            android:clickable="true"
+            android:focusable="true"
+            app:centerSubTextColor="#6B6B6B"
+            app:centerTextColor="#111111"
+            app:progressColor="#111111"
+            app:ringColor="#E5E5E5"
+            app:ringMaxProgress="2500"
+            app:ringProgress="0"
+            app:ringStrokeWidth="2dp" />
+
+        <!-- 标签：剩余 + 次数 -->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="8dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/chipRemaining"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="6dp"
+                android:background="@drawable/bg_home_chip"
+                android:paddingStart="10dp"
+                android:paddingTop="4dp"
+                android:paddingEnd="10dp"
+                android:paddingBottom="4dp"
+                android:text="剩余 2500 ml"
+                android:textColor="#111111"
+                android:textSize="10sp" />
+
+            <TextView
+                android:id="@+id/chipCount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_home_chip"
+                android:paddingStart="10dp"
+                android:paddingTop="4dp"
+                android:paddingEnd="10dp"
+                android:paddingBottom="4dp"
+                android:text="已喝 0 次"
+                android:textColor="#6B6B6B"
+                android:textSize="10sp" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="16dp"
+            android:background="#E5E5E5" />
+
+        <!-- 今日历程标题 -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:letterSpacing="0.2"
+            android:text="Today's Timeline"
+            android:textAllCaps="true"
+            android:textColor="#6B6B6B"
+            android:textSize="10sp" />
+
+        <!-- 今日历程：固定 5 条高度，超出 RecyclerView 内部滚动 -->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvTodayRecords"
+            android:layout_width="match_parent"
+            android:layout_height="240dp"
+            android:nestedScrollingEnabled="true"
+            android:overScrollMode="always"
+            android:scrollbars="none"
+            android:visibility="gone" />
+
+        <!-- 当前人群 -->
+        <LinearLayout
+            android:id="@+id/layoutPersonType"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:background="?attr/selectableItemBackground"
+            android:clickable="true"
+            android:focusable="true"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:padding="16dp">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="当前人群"
+                android:textColor="#111111"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/tvCurrentType"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="未选择"
+                android:textColor="#111111"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <!-- 目标达成提示（默认隐藏） -->
+        <TextView
+            android:id="@+id/tvGoalReached"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="12dp"
+            android:drawableStart="@drawable/ic_check"
+            android:drawablePadding="6dp"
+            android:text="今日目标已达成"
+            android:textColor="#52C41A"
+            android:textSize="14sp"
+            android:visibility="gone" />
+
+        <!-- 记一杯水 -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnCheckIn"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:layout_marginTop="16dp"
+            android:backgroundTint="#111111"
+            android:letterSpacing="0.15"
+            android:text="记一杯水"
+            android:textColor="#FFFFFF"
+            android:textSize="15sp"
+            android:textStyle="bold"
+            app:cornerRadius="0dp"
+            app:icon="@drawable/ic_water_cup"
+            app:iconGravity="textStart"
+            app:iconTint="#FFFFFF" />
+
+    </LinearLayout>
+
+</androidx.core.widget.NestedScrollView>

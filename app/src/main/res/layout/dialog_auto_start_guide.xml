@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/dialog_message"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingStart="24dp"
+    android:paddingEnd="24dp"
+    android:paddingTop="16dp"
+    android:paddingBottom="16dp"
+    android:textSize="15sp"
+    android:singleLine="false"
+    android:maxLines="10"
+    android:lineSpacingMultiplier="1.3"
+    android:text="为了确保喝水提醒能正常工作，请在系统设置中允许本应用自启动。&#10;&#10;不同品牌手机路径可能不同，一般在：&#10;设置 → 应用管理 → 喝水提醒 → 自启动管理" />

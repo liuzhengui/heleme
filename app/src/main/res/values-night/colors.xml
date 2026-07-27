@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- ===== 支付宝蓝系（深色模式） ===== -->
+    <color name="blue_primary">#4096FF</color>
+    <color name="blue_dark">#0958D9</color>
+    <color name="blue_light">#111D2C</color>
+    <color name="aqua_soft">#111D2C</color>
+    <color name="mint_soft">#0D2818</color>
+
+    <!-- ===== 功能色 ===== -->
+    <color name="danger_red">#FF7875</color>
+    <color name="green_success">#49AA19</color>
+    <color name="green_success_light">#0D2818</color>
+    <color name="warning_orange">#FDBA74</color>
+
+    <!-- ===== 中性色 ===== -->
+    <color name="white">#FFFFFF</color>
+    <color name="black">#000000</color>
+    <color name="gray_light">#1A1A2E</color>
+    <color name="gray">#434358</color>
+    <color name="gray_dark">#D9D9D9</color>
+
+    <color name="text_primary">#E8E8E8</color>
+    <color name="text_secondary">#A0A0A0</color>
+    <color name="text_hint">#6B6B6B</color>
+
+    <color name="divider">#2A2A3C</color>
+    <color name="card_background">#1A1A2E</color>
+    <color name="screen_background">#0D0D1A</color>
+</resources>

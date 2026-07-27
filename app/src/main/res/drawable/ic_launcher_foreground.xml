@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+
+    <!-- Main water drop silhouette -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M54,18 C42,36 26,52 26,66 C26,80 38,90 54,90 C70,90 82,80 82,66 C82,52 66,36 54,18 Z" />
+
+    <!-- Inner water body - light cyan -->
+    <path
+        android:fillColor="#E6F4FF"
+        android:pathData="M54,34 C46,46 36,54 36,64 C36,74 44,82 54,82 C64,82 72,74 72,64 C72,54 62,46 54,34 Z" />
+
+    <!-- Water surface wave - deeper blue -->
+    <path
+        android:fillColor="#1677FF"
+        android:pathData="M38,64 C42,60 48,68 54,64 C60,60 66,68 70,64 C70,74 63,82 54,82 C45,82 38,74 38,64 Z" />
+
+    <!-- Glass highlight - subtle crescent -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:fillAlpha="0.6"
+        android:pathData="M46,48 C46,43 50,38 54,42 C51,43 48,45 46,48 Z" />
+</vector>

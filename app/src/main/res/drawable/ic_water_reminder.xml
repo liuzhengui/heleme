@@ -1,0 +1,14 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24">
+    <!-- 水滴主体 -->
+    <path
+        android:fillColor="#000000"
+        android:pathData="M12,2C12,2 5,11 5,15.5C5,19.09 8.13,22 12,22C15.87,22 19,19.09 19,15.5C19,11 12,2 12,2Z" />
+    <!-- 铃铛小标记（右上角） -->
+    <path
+        android:fillColor="#000000"
+        android:pathData="M19,3C19,3 17.5,4.5 17.5,5.5C17.5,6.33 18.17,7 19,7C19.83,7 20.5,6.33 20.5,5.5C20.5,4.5 19,3 19,3Z" />
+</vector>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- 间距 -->
+    <dimen name="spacing_xs">4dp</dimen>
+    <dimen name="spacing_sm">8dp</dimen>
+    <dimen name="spacing_md">16dp</dimen>
+    <dimen name="spacing_lg">24dp</dimen>
+    <dimen name="spacing_xl">32dp</dimen>
+
+    <!-- 卡片 -->
+    <dimen name="card_radius">16dp</dimen>
+    <dimen name="card_radius_sm">12dp</dimen>
+    <dimen name="card_elevation_low">2dp</dimen>
+    <dimen name="card_elevation_mid">4dp</dimen>
+    <dimen name="card_elevation_high">6dp</dimen>
+
+    <!-- 进度圆 -->
+    <dimen name="progress_circle_size">180dp</dimen>
+</resources>

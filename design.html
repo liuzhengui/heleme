@@ -1,0 +1,1915 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>WaterReminder · 界面原型 v2.0</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=Noto+Serif+SC:ital,wght@0,400;0,700;1,400;1,700&family=EB+Garamond:ital,wght@0,500;0,700;1,500&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  /* ============== 设计令牌 ============== */
+  :root {
+    /* 黑白灰（占比约 96%） */
+    --ink:        #111111;   /* 主文字 / 关键操作 */
+    --ink-2:      #1F1F1F;   /* 正文 */
+    --ink-3:      #6B6B6B;   /* 副文字 AA 5.7:1 */
+    --ink-4:      #A0A0A0;   /* 弱化文字 */
+    --rule:       #E5E5E5;   /* 分隔线 */
+    --rule-2:     #F0F0F0;   /* 浅分隔 */
+    --paper:      #FFFFFF;   /* 主背景 */
+    --paper-2:    #FAFAF7;   /* 米白二级背景 */
+    --paper-3:    #F4F4F0;   /* 米白三级背景 / chip 底 */
+
+    /* 强调色（占比约 3%，仅用于进度/重要提示） */
+    --accent:     #111111;   /* 黑色作主强调，不用彩色 */
+    --danger:     #B00020;   /* 危险：仅删除/警告 */
+
+    /* 字体 */
+    --font-zh:    "Noto Serif SC", "KaiTi", "STKaiti", serif;
+    --font-en:    "EB Garamond", "Caveat", "Brush Script MT", cursive;
+    --font-mono:  "JetBrains Mono", "SF Mono", Consolas, monospace;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html, body {
+    background: var(--paper-2);
+    color: var(--ink);
+    font-family: var(--font-zh);
+    font-size: 14px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ============== 报头式导航 ============== */
+  .masthead {
+    background: var(--paper);
+    border-bottom: 2px solid var(--ink);
+    padding: 32px 48px 20px;
+  }
+  .masthead-top {
+    display: flex; align-items: baseline; justify-content: space-between;
+    border-bottom: 1px solid var(--rule);
+    padding-bottom: 10px; margin-bottom: 14px;
+  }
+  .masthead-top .issue {
+    font-family: var(--font-mono);
+    font-size: 11px; color: var(--ink-3);
+    letter-spacing: 1.5px; text-transform: uppercase;
+  }
+  .masthead-top .date {
+    font-family: var(--font-mono);
+    font-size: 11px; color: var(--ink-3);
+    letter-spacing: 1.5px;
+  }
+  .masthead h1 {
+    font-family: var(--font-en);
+    font-style: italic;
+    font-size: 56px;
+    font-weight: 500;
+    letter-spacing: -1px;
+    color: var(--ink);
+  }
+  .masthead .subtitle {
+    font-size: 13px; color: var(--ink-3);
+    margin-top: 6px; letter-spacing: 0.5px;
+  }
+  .masthead .subtitle b { color: var(--ink); font-weight: 700; }
+
+  /* ============== 目录 ============== */
+  .toc {
+    background: var(--paper);
+    padding: 18px 48px;
+    border-bottom: 1px solid var(--rule);
+    display: flex; gap: 18px; flex-wrap: wrap;
+    font-family: var(--font-mono);
+    font-size: 11px; letter-spacing: 1.2px;
+    text-transform: uppercase;
+  }
+  .toc a {
+    color: var(--ink-3); text-decoration: none;
+    border-right: 1px solid var(--rule);
+    padding-right: 18px;
+  }
+  .toc a:last-child { border-right: none; }
+  .toc a:hover { color: var(--ink); }
+
+  /* ============== 章节 ============== */
+  .section {
+    padding: 56px 48px;
+    max-width: 1600px;
+    margin: 0 auto;
+  }
+  .section + .section { border-top: 1px solid var(--rule); }
+  .section-head {
+    display: grid; grid-template-columns: 80px 1fr; gap: 24px;
+    margin-bottom: 36px; align-items: end;
+  }
+  .section-num {
+    font-family: var(--font-mono);
+    font-size: 12px; color: var(--ink-3);
+    letter-spacing: 2px;
+  }
+  .section-title {
+    font-family: var(--font-en);
+    font-style: italic;
+    font-size: 38px; font-weight: 500;
+    color: var(--ink);
+    line-height: 1.1;
+  }
+  .section-title-zh {
+    font-size: 16px; color: var(--ink-2);
+    margin-top: 6px; font-weight: 700;
+  }
+  .section-lede {
+    grid-column: 2;
+    font-size: 14px; color: var(--ink-3);
+    margin-top: 8px; max-width: 640px;
+  }
+
+  /* ============== 手机设备外壳 ============== */
+  .phones {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+    gap: 32px;
+  }
+  .phone {
+    background: var(--paper);
+    border: 1px solid var(--rule);
+    border-radius: 36px;
+    padding: 12px;
+    width: 100%;
+    max-width: 360px;
+    margin: 0 auto;
+  }
+  .phone-frame {
+    background: var(--paper);
+    border-radius: 28px;
+    overflow: hidden;
+    aspect-ratio: 9/19;
+    display: flex; flex-direction: column;
+    border: 1px solid var(--rule);
+  }
+  .phone-label {
+    display: flex; justify-content: space-between; align-items: baseline;
+    margin: 14px 8px 8px;
+    font-family: var(--font-mono);
+    font-size: 10px; color: var(--ink-3);
+    letter-spacing: 1.5px; text-transform: uppercase;
+  }
+  .phone-label .num {
+    font-family: var(--font-en); font-style: italic;
+    font-size: 16px; color: var(--ink); text-transform: none; letter-spacing: 0;
+  }
+
+  /* ============== 状态栏 ============== */
+  .status-bar {
+    display: flex; justify-content: space-between;
+    padding: 12px 24px 6px;
+    font-family: var(--font-mono);
+    font-size: 11px; font-weight: 700;
+    color: var(--ink);
+  }
+  .status-bar .right { display: flex; gap: 6px; align-items: center; }
+  .status-bar .dot { width: 4px; height: 4px; background: var(--ink); border-radius: 50%; }
+
+  /* ============== 顶部栏 ============== */
+  .topbar {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 14px 24px;
+    border-bottom: 1px solid var(--rule);
+  }
+  .topbar h2 {
+    font-size: 15px; font-weight: 700; color: var(--ink);
+    letter-spacing: 0.3px;
+  }
+  .topbar .left, .topbar .right { display: flex; align-items: center; gap: 12px; }
+
+  .icon-btn {
+    width: 28px; height: 28px;
+    display: grid; place-items: center;
+    color: var(--ink); cursor: pointer;
+  }
+  .icon-btn svg { width: 18px; height: 18px; }
+
+  /* ============== 内容容器 ============== */
+  .screen {
+    flex: 1; overflow-y: auto; padding: 16px 20px 24px;
+  }
+  .screen::-webkit-scrollbar { display: none; }
+
+  /* ============== 报头式大字标题 ============== */
+  .hero-label {
+    font-family: var(--font-mono);
+    font-size: 10px; letter-spacing: 2.5px;
+    color: var(--ink-3); text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+  .hero-title {
+    font-family: var(--font-en);
+    font-style: italic;
+    font-size: 42px; font-weight: 500;
+    line-height: 1; color: var(--ink);
+    margin-bottom: 4px;
+  }
+  .hero-title .small { font-size: 18px; color: var(--ink-3); }
+  .hero-zh {
+    font-size: 14px; color: var(--ink-3);
+    font-style: italic; margin-top: 8px;
+  }
+
+  .divider {
+    border: none; border-top: 1px solid var(--rule);
+    margin: 20px 0;
+  }
+  .divider-thick { border-top: 2px solid var(--ink); margin: 24px 0; }
+
+  /* ============== 按钮 ============== */
+  .btn-primary {
+    width: 100%;
+    background: var(--ink);
+    color: var(--paper);
+    border: none; padding: 16px;
+    font-family: var(--font-zh);
+    font-size: 15px; font-weight: 700;
+    border-radius: 0;
+    letter-spacing: 2px;
+  }
+  .btn-secondary {
+    width: 100%;
+    background: transparent;
+    color: var(--ink);
+    border: 1px solid var(--ink);
+    padding: 14px;
+    font-family: var(--font-zh);
+    font-size: 14px;
+    border-radius: 0;
+  }
+  .btn-ghost {
+    background: transparent; color: var(--ink-3); border: none;
+    font-family: var(--font-zh); font-size: 13px;
+    padding: 6px 0; text-decoration: underline; text-underline-offset: 4px;
+  }
+  .btn-link {
+    color: var(--ink); text-decoration: underline; text-underline-offset: 4px;
+    font-weight: 700;
+  }
+
+  /* ============== 进度圆 ============== */
+  .progress-ring {
+    width: 200px; height: 200px;
+    margin: 24px auto;
+    position: relative;
+  }
+  .progress-ring svg { transform: rotate(-90deg); }
+  .progress-ring .center {
+    position: absolute; inset: 0;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+  }
+  .progress-ring .pct {
+    font-family: var(--font-en);
+    font-style: italic;
+    font-size: 64px; line-height: 1;
+    color: var(--ink);
+  }
+  .progress-ring .pct .sym { font-size: 24px; color: var(--ink-3); }
+  .progress-ring .sub {
+    font-family: var(--font-mono);
+    font-size: 10px; letter-spacing: 2px;
+    color: var(--ink-3); text-transform: uppercase;
+    margin-top: 8px;
+  }
+
+  /* ============== 行式列表 ============== */
+  .row {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 16px 0;
+    border-bottom: 1px solid var(--rule);
+  }
+  .row:last-child { border-bottom: none; }
+  .row .label { font-size: 14px; color: var(--ink-2); }
+  .row .value {
+    font-family: var(--font-en); font-style: italic;
+    font-size: 18px; color: var(--ink);
+  }
+  .row .value-sm {
+    font-family: var(--font-mono);
+    font-size: 12px; color: var(--ink-3);
+    letter-spacing: 1px;
+  }
+
+  /* ============== 卡片 ============== */
+  .card {
+    border: 1px solid var(--ink);
+    background: var(--paper);
+    padding: 20px;
+    margin-bottom: 16px;
+  }
+  .card-light {
+    border: 1px solid var(--rule);
+    background: var(--paper);
+    padding: 16px;
+    margin-bottom: 12px;
+  }
+  .card-num {
+    font-family: var(--font-mono);
+    font-size: 10px; color: var(--ink-3);
+    letter-spacing: 2px;
+  }
+  .card-title {
+    font-size: 15px; font-weight: 700; color: var(--ink);
+    margin: 6px 0 10px;
+  }
+  .card-text {
+    font-size: 13px; color: var(--ink-2);
+    line-height: 1.7;
+  }
+
+  /* ============== 编号列表（报纸风） ============== */
+  .numbered {
+    list-style: none; counter-reset: n;
+  }
+  .numbered li {
+    display: grid; grid-template-columns: 36px 1fr; gap: 8px;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--rule-2);
+    counter-increment: n;
+  }
+  .numbered li::before {
+    content: counter(n, decimal-leading-zero);
+    font-family: var(--font-mono);
+    font-size: 11px; font-weight: 700;
+    color: var(--ink-3); letter-spacing: 1px;
+    padding-top: 2px;
+  }
+  .numbered li b { display: block; font-size: 14px; margin-bottom: 2px; color: var(--ink); }
+  .numbered li p { font-size: 13px; color: var(--ink-2); line-height: 1.6; }
+
+  /* ============== 时间线 ============== */
+  .timeline {
+    list-style: none; position: relative;
+    padding-left: 18px;
+  }
+  .timeline::before {
+    content: ''; position: absolute;
+    left: 4px; top: 8px; bottom: 8px;
+    width: 1px; background: var(--ink);
+  }
+  .timeline li {
+    position: relative; padding: 6px 0 16px;
+    display: grid; grid-template-columns: 56px 1fr auto; gap: 10px;
+    align-items: baseline;
+  }
+  .timeline li::before {
+    content: ''; position: absolute;
+    left: -18px; top: 14px;
+    width: 9px; height: 9px;
+    background: var(--paper);
+    border: 1.5px solid var(--ink);
+    border-radius: 50%;
+  }
+  .timeline .time {
+    font-family: var(--font-mono);
+    font-size: 12px; color: var(--ink-3);
+    letter-spacing: 1px;
+  }
+  .timeline .desc { font-size: 14px; color: var(--ink); }
+  .timeline .amount {
+    font-family: var(--font-en); font-style: italic;
+    font-size: 16px; color: var(--ink);
+  }
+
+  /* ============== 标签 chip ============== */
+  .chip {
+    display: inline-block;
+    padding: 4px 10px;
+    border: 1px solid var(--ink);
+    font-family: var(--font-mono);
+    font-size: 10px; letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--ink);
+    margin-right: 6px;
+  }
+  .chip-outline {
+    display: inline-block;
+    padding: 4px 10px;
+    border: 1px solid var(--rule);
+    font-size: 11px;
+    color: var(--ink-3);
+    margin-right: 6px;
+  }
+
+  /* ============== 底部导航 ============== */
+  .bottom-nav {
+    display: grid; grid-template-columns: repeat(4, 1fr);
+    border-top: 1px solid var(--ink);
+    background: var(--paper);
+  }
+  .bottom-nav .item {
+    padding: 12px 0 10px;
+    text-align: center;
+    border-right: 1px solid var(--rule-2);
+  }
+  .bottom-nav .item:last-child { border-right: none; }
+  .bottom-nav .item.active { background: var(--ink); color: var(--paper); }
+  .bottom-nav .item svg { width: 18px; height: 18px; display: block; margin: 0 auto 4px; }
+  .bottom-nav .item span {
+    font-family: var(--font-mono);
+    font-size: 9px; letter-spacing: 1.5px;
+    text-transform: uppercase;
+  }
+
+  /* ============== 开关 ============== */
+  .switch {
+    width: 36px; height: 20px;
+    background: var(--paper);
+    border: 1.5px solid var(--ink);
+    border-radius: 999px;
+    position: relative;
+  }
+  .switch::after {
+    content: ''; position: absolute;
+    top: 1px; left: 1px;
+    width: 14px; height: 14px;
+    background: var(--ink);
+    border-radius: 50%;
+  }
+  .switch.on { background: var(--ink); }
+  .switch.on::after { left: auto; right: 1px; background: var(--paper); }
+
+  /* ============== 弹层 ============== */
+  .bottom-sheet {
+    position: absolute; left: 0; right: 0; bottom: 0;
+    background: var(--paper);
+    border-top: 2px solid var(--ink);
+    padding: 24px 20px 28px;
+  }
+  .sheet-handle {
+    width: 40px; height: 2px;
+    background: var(--ink);
+    margin: 0 auto 18px;
+  }
+
+  /* ============== 全屏 ============== */
+  .fullscreen {
+    background: var(--paper-2);
+    height: 100%; display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    text-align: center; padding: 40px 32px;
+  }
+  .fullscreen .display {
+    font-family: var(--font-en); font-style: italic;
+    font-size: 88px; line-height: 0.9; color: var(--ink);
+  }
+  .fullscreen .display .small { font-size: 28px; color: var(--ink-3); }
+  .fullscreen .quote {
+    font-size: 16px; color: var(--ink-2);
+    margin: 24px 0 8px;
+    max-width: 280px;
+    line-height: 1.5;
+  }
+  .fullscreen .meta {
+    font-family: var(--font-mono);
+    font-size: 10px; letter-spacing: 2px;
+    color: var(--ink-3); text-transform: uppercase;
+    margin-bottom: 32px;
+  }
+
+  /* ============== 通知 ============== */
+  .notification {
+    background: var(--paper);
+    border: 1px solid var(--ink);
+    padding: 14px 16px;
+    margin: 12px 0;
+    display: grid; grid-template-columns: 32px 1fr; gap: 12px;
+  }
+  .notification .avatar {
+    width: 32px; height: 32px;
+    background: var(--ink); color: var(--paper);
+    display: grid; place-items: center;
+    font-family: var(--font-en); font-style: italic;
+    font-size: 18px; font-weight: 700;
+  }
+  .notification .title {
+    font-size: 13px; font-weight: 700; color: var(--ink);
+    margin-bottom: 2px;
+  }
+  .notification .body {
+    font-size: 12px; color: var(--ink-2);
+    line-height: 1.5; margin-bottom: 10px;
+  }
+  .notification .actions { display: flex; gap: 8px; }
+  .notification .action {
+    flex: 1;
+    border: 1px solid var(--ink);
+    background: var(--paper);
+    color: var(--ink);
+    text-align: center;
+    padding: 6px 0;
+    font-size: 12px; font-weight: 700;
+  }
+  .notification .action.primary { background: var(--ink); color: var(--paper); }
+
+  /* ============== 小组件 ============== */
+  .widget-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .widget {
+    background: var(--paper-2);
+    border: 1px solid var(--ink);
+    aspect-ratio: 1;
+    padding: 14px;
+    display: flex; flex-direction: column;
+    justify-content: space-between;
+  }
+  .widget.wide { grid-column: span 2; aspect-ratio: 2.4/1; }
+  .widget .wt-title {
+    font-family: var(--font-mono);
+    font-size: 9px; letter-spacing: 2px;
+    color: var(--ink-3); text-transform: uppercase;
+  }
+  .widget .wt-num {
+    font-family: var(--font-en); font-style: italic;
+    font-size: 32px; color: var(--ink); line-height: 1;
+  }
+  .widget.wide .wt-num { font-size: 42px; }
+  .widget .wt-bar { height: 2px; background: var(--rule); position: relative; }
+  .widget .wt-bar::after {
+    content: ''; position: absolute; left: 0; top: 0; bottom: 0;
+    width: 68%; background: var(--ink);
+  }
+  .widget .wt-foot {
+    display: flex; justify-content: space-between;
+    font-family: var(--font-mono);
+    font-size: 9px; color: var(--ink-3);
+    letter-spacing: 1px;
+  }
+
+  /* ============== 图表占位 ============== */
+  .chart-area {
+    height: 140px;
+    background:
+      linear-gradient(to top, transparent 0%, transparent 31%, var(--rule) 31%, var(--rule) 32%, transparent 32%) ,
+      linear-gradient(to right, var(--rule-2) 1px, transparent 1px) 0 0 / 14.28% 100%;
+    position: relative;
+    margin: 16px 0 8px;
+  }
+  .chart-area::after {
+    content: '';
+    position: absolute; left: 0; right: 0; bottom: 32%;
+    height: 1px; background: var(--ink);
+  }
+  .chart-bar {
+    position: absolute; bottom: 0;
+    width: 8%; background: var(--ink);
+  }
+  .chart-axis {
+    display: flex; justify-content: space-between;
+    font-family: var(--font-mono);
+    font-size: 9px; color: var(--ink-3);
+    letter-spacing: 1px;
+  }
+
+  /* ============== 标签栏 tabs ============== */
+  .tabs {
+    display: flex;
+    border-bottom: 1px solid var(--ink);
+    margin-bottom: 16px;
+  }
+  .tabs .tab {
+    flex: 1; padding: 10px 0;
+    text-align: center;
+    font-family: var(--font-mono);
+    font-size: 10px; letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--ink-3);
+    border-bottom: 2px solid transparent;
+    margin-bottom: -1px;
+  }
+  .tabs .tab.active { color: var(--ink); border-bottom-color: var(--ink); font-weight: 700; }
+
+  /* ============== 统计数字大字号 ============== */
+  .stat {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 16px 20px;
+    margin: 8px 0 16px;
+  }
+  .stat .item { border-top: 1px solid var(--ink); padding-top: 8px; }
+  .stat .label {
+    font-family: var(--font-mono);
+    font-size: 9px; letter-spacing: 1.5px;
+    color: var(--ink-3); text-transform: uppercase;
+  }
+  .stat .value {
+    font-family: var(--font-en); font-style: italic;
+    font-size: 28px; color: var(--ink); line-height: 1.1;
+    margin-top: 4px;
+  }
+  .stat .unit { font-size: 14px; color: var(--ink-3); }
+
+  /* ============== 报头日期式小标 ============== */
+  .stamp {
+    display: inline-block;
+    font-family: var(--font-mono);
+    font-size: 10px; letter-spacing: 2px;
+    color: var(--ink-3);
+    text-transform: uppercase;
+    border-top: 1px solid var(--ink-3);
+    border-bottom: 1px solid var(--ink-3);
+    padding: 2px 0;
+  }
+
+  /* ============== 排版引文 ============== */
+  .pullquote {
+    font-family: var(--font-en); font-style: italic;
+    font-size: 22px; line-height: 1.4;
+    color: var(--ink);
+    border-top: 2px solid var(--ink);
+    border-bottom: 1px solid var(--ink);
+    padding: 16px 0;
+    margin: 16px 0;
+  }
+
+  /* ============== 设计令牌展示 ============== */
+  .tokens {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 0;
+    border: 1px solid var(--ink);
+  }
+  .tokens .swatch {
+    padding: 20px 16px;
+    border-right: 1px solid var(--rule);
+    border-bottom: 1px solid var(--rule);
+  }
+  .tokens .swatch:last-child { border-right: none; }
+  .tokens .chip-color {
+    width: 100%; height: 48px; margin-bottom: 10px;
+    border: 1px solid var(--rule);
+  }
+  .tokens .name { font-size: 12px; font-weight: 700; color: var(--ink); }
+  .tokens .hex { font-family: var(--font-mono); font-size: 10px; color: var(--ink-3); }
+
+  /* ============== 注解 ============== */
+  .annotate {
+    font-family: var(--font-mono);
+    font-size: 10px; color: var(--ink-3);
+    letter-spacing: 1.5px; text-transform: uppercase;
+    margin: 24px 0 8px;
+  }
+
+  .ratio {
+    display: inline-block;
+    border: 1px solid var(--ink);
+    padding: 1px 6px;
+    font-family: var(--font-mono);
+    font-size: 9px; letter-spacing: 1px;
+    color: var(--ink);
+    margin-left: 6px;
+  }
+</style>
+</head>
+<body>
+
+<!-- ============== 报头 ============== -->
+<header class="masthead">
+  <div class="masthead-top">
+    <span class="issue">Vol. 02 · No. 14</span>
+    <span class="date">2026 · UI Design Spec</span>
+  </div>
+  <h1>WaterReminder</h1>
+  <p class="subtitle">喝水提醒 · <b>极简黑白设计语言 v2.0</b> · 报纸版式 · 零数据风险</p>
+</header>
+
+<nav class="toc">
+  <a href="#design">设计原则</a>
+  <a href="#color">配色与对比度</a>
+  <a href="#onboarding">01 启动引导</a>
+  <a href="#home">02 主页</a>
+  <a href="#sheet">03 打卡弹层</a>
+  <a href="#person">04 人群类型</a>
+  <a href="#reminder">05 提醒时间</a>
+  <a href="#record-day">06 记录·日</a>
+  <a href="#record-month">07 记录·月</a>
+  <a href="#chart">08 趋势图</a>
+  <a href="#stats">09 统计</a>
+  <a href="#fullscreen">10 全屏提醒</a>
+  <a href="#about">11 关于</a>
+  <a href="#notif">12 通知</a>
+  <a href="#widget">13 小组件</a>
+</nav>
+
+<!-- ============== 设计原则 ============== -->
+<section class="section" id="design">
+  <div class="section-head">
+    <div class="section-num">No. 00</div>
+    <div>
+      <div class="section-title">Design Principles</div>
+      <div class="section-title-zh">设计原则</div>
+    </div>
+  </div>
+  <p class="section-lede">
+    全应用统一一套黑白灰系统。<b>颜色占比</b> 控制在：黑 10% · 灰 25% · 米白/白 60% · 强调红 &lt;1%。
+    主操作使用纯黑按钮，状态变化靠灰阶与字号呈现，<b>不依赖彩色</b>。
+  </p>
+  <div class="pullquote">
+    Less, but better. <br>
+    以版式、字重、留白、对比度四个维度建立层次，而非堆砌颜色。
+  </div>
+  <ul class="numbered" style="margin-top: 16px;">
+    <li><div><b>黑白为主</b><p>主文字 #111 / 正文 #1F1F1F / 副文字 #6B6B6B / 弱化 #A0A0A0，全部满足 WCAG AA。</p></div></li>
+    <li><div><b>无 emoji</b><p>图标全部使用细线 SVG（24×24 / 1.5px stroke），不使用任何彩色或表情符号。</p></div></li>
+    <li><div><b>报头式标题</b><p>英文用 EB Garamond 斜体作主标，中文用 Noto Serif SC / 楷体。栏目编号 monospace 01 02 03。</p></div></li>
+    <li><div><b>零阴影极简</b><p>卡片仅有 1px 细线描边，无 elevation 阴影，靠空间留白分层。</p></div></li>
+    <li><div><b>对比度优先</b><p>主标题 19.3:1，正文 17.5:1，副文字 5.7:1（≥ AA 大字号）。弱化文字仅用于装饰。</p></div></li>
+  </ul>
+</section>
+
+<!-- ============== 配色与对比度 ============== -->
+<section class="section" id="color">
+  <div class="section-head">
+    <div class="section-num">No. 00a</div>
+    <div>
+      <div class="section-title">Color &amp; Contrast</div>
+      <div class="section-title-zh">配色与对比度</div>
+    </div>
+  </div>
+  <p class="section-lede">
+    整套系统 7 个颜色：5 个灰阶 + 1 个强调黑 + 1 个仅用于删除/危险状态的深红。
+    每个 token 后括号为与白底的对比度，全部满足 WCAG AA。
+  </p>
+
+  <div class="annotate">Neutral Scale</div>
+  <div class="tokens">
+    <div class="swatch">
+      <div class="chip-color" style="background:#111111"></div>
+      <div class="name">Ink<span class="ratio">19.3:1</span></div>
+      <div class="hex">#111111 · 主文字 / 主按钮</div>
+    </div>
+    <div class="swatch">
+      <div class="chip-color" style="background:#1F1F1F"></div>
+      <div class="name">Body<span class="ratio">17.5:1</span></div>
+      <div class="hex">#1F1F1F · 正文</div>
+    </div>
+    <div class="swatch">
+      <div class="chip-color" style="background:#6B6B6B"></div>
+      <div class="name">Muted<span class="ratio">5.7:1</span></div>
+      <div class="hex">#6B6B6B · 副文字 / 时间戳</div>
+    </div>
+    <div class="swatch">
+      <div class="chip-color" style="background:#A0A0A0"></div>
+      <div class="name">Faint<span class="ratio">2.7:1</span></div>
+      <div class="hex">#A0A0A0 · 弱化（仅装饰）</div>
+    </div>
+    <div class="swatch">
+      <div class="chip-color" style="background:#E5E5E5"></div>
+      <div class="name">Rule<span class="ratio">1.4:1</span></div>
+      <div class="hex">#E5E5E5 · 分隔线</div>
+    </div>
+    <div class="swatch">
+      <div class="chip-color" style="background:#FAFAF7"></div>
+      <div class="name">Paper 2</div>
+      <div class="hex">#FAFAF7 · 米白二级背景</div>
+    </div>
+    <div class="swatch">
+      <div class="chip-color" style="background:#FFFFFF; border:1px solid #E5E5E5"></div>
+      <div class="name">Paper</div>
+      <div class="hex">#FFFFFF · 主背景</div>
+    </div>
+    <div class="swatch">
+      <div class="chip-color" style="background:#B00020"></div>
+      <div class="name">Danger<span class="ratio">7.4:1</span></div>
+      <div class="hex">#B00020 · 仅用于删除/警告</div>
+    </div>
+  </div>
+
+  <div class="annotate">Color Ratio</div>
+  <table style="width:100%; border-collapse:collapse; font-size:13px;">
+    <tr style="border-bottom:1px solid var(--ink);">
+      <th style="text-align:left; padding:8px 0; font-family:var(--font-mono); font-size:10px; letter-spacing:1.5px; text-transform:uppercase; color:var(--ink-3);">用途</th>
+      <th style="text-align:left; padding:8px 0; font-family:var(--font-mono); font-size:10px; letter-spacing:1.5px; text-transform:uppercase; color:var(--ink-3);">颜色</th>
+      <th style="text-align:right; padding:8px 0; font-family:var(--font-mono); font-size:10px; letter-spacing:1.5px; text-transform:uppercase; color:var(--ink-3);">占比</th>
+    </tr>
+    <tr style="border-bottom:1px solid var(--rule);">
+      <td style="padding:6px 0;">主文字 / 主按钮 / 关键操作</td>
+      <td style="padding:6px 0;">#111111</td>
+      <td style="padding:6px 0; text-align:right;">10%</td>
+    </tr>
+    <tr style="border-bottom:1px solid var(--rule);">
+      <td style="padding:6px 0;">次要文字 / 描边 / 分隔</td>
+      <td style="padding:6px 0;">#6B6B6B / #E5E5E5</td>
+      <td style="padding:6px 0; text-align:right;">25%</td>
+    </tr>
+    <tr style="border-bottom:1px solid var(--rule);">
+      <td style="padding:6px 0;">背景 / 大面积留白</td>
+      <td style="padding:6px 0;">#FFFFFF / #FAFAF7</td>
+      <td style="padding:6px 0; text-align:right;">60%</td>
+    </tr>
+    <tr>
+      <td style="padding:6px 0;">删除 / 危险</td>
+      <td style="padding:6px 0;">#B00020</td>
+      <td style="padding:6px 0; text-align:right;">&lt;1%</td>
+    </tr>
+  </table>
+</section>
+
+<!-- ============== 01 启动引导 ============== -->
+<section class="section" id="onboarding">
+  <div class="section-head">
+    <div class="section-num">No. 01</div>
+    <div>
+      <div class="section-title">Onboarding</div>
+      <div class="section-title-zh">启动引导 · 三步式</div>
+    </div>
+  </div>
+  <p class="section-lede">首次启动展示 3 步引导：人群选择 → 目标设定 → 开启提醒。建立版本叙事感，使用大字报头式标题。</p>
+
+  <div class="phones">
+    <!-- 引导 1 -->
+    <div>
+      <div class="phone-label"><span>STEP ONE</span><span class="num">i.</span></div>
+      <div class="phone">
+        <div class="phone-frame">
+          <div class="status-bar"><span>9:41</span><div class="right"><span>5G</span><span class="dot"></span><span>100%</span></div></div>
+          <div class="screen">
+            <div class="hero-label">— Chapter One —</div>
+            <div class="hero-title">Who are <span class="small">you</span>?</div>
+            <div class="hero-zh">你是哪一类人？我们为你设定合适的饮水量。</div>
+
+            <hr class="divider-thick">
+
+            <div class="stamp" style="margin-bottom: 12px;">Choose a Type</div>
+
+            <div class="card-light">
+              <div class="row" style="padding: 6px 0; border:none;">
+                <span class="label">成年男性</span>
+                <span class="value-sm">2500 ML / D</span>
+              </div>
+            </div>
+            <div class="card-light" style="background: var(--ink); color: var(--paper); border-color: var(--ink);">
+              <div class="row" style="padding: 6px 0; border:none;">
+                <span class="label" style="color: var(--paper);">成年女性</span>
+                <span class="value-sm" style="color: var(--paper); opacity:0.6;">2000 ML / D</span>
+              </div>
+            </div>
+            <div class="card-light">
+              <div class="row" style="padding: 6px 0; border:none;">
+                <span class="label">青少年</span>
+                <span class="value-sm">1800 ML / D</span>
+              </div>
+            </div>
+            <div class="card-light">
+              <div class="row" style="padding: 6px 0; border:none;">
+                <span class="label">运动人群</span>
+                <span class="value-sm">3000 ML / D</span>
+              </div>
+            </div>
+
+            <button class="btn-primary" style="margin-top: 16px;">继续</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 引导 2 -->
+    <div>
+      <div class="phone-label"><span>STEP TWO</span><span class="num">ii.</span></div>
+      <div class="phone">
+        <div class="phone-frame">
+          <div class="status-bar"><span>9:41</span><div class="right"><span>5G</span><span class="dot"></span><span>100%</span></div></div>
+          <div class="screen">
+            <div class="hero-label">— Chapter Two —</div>
+            <div class="hero-title">Set your <span class="small">goal</span></div>
+            <div class="hero-zh">我们建议 2500ml。下滑可以微调。</div>
+
+            <div class="progress-ring">
+              <svg width="200" height="200" viewBox="0 0 200 200">
+                <circle cx="100" cy="100" r="86" fill="none" stroke="#E5E5E5" stroke-width="2"/>
+                <circle cx="100" cy="100" r="86" fill="none" stroke="#111" stroke-width="2"
+                  stroke-dasharray="540" stroke-dashoffset="108" stroke-linecap="square"/>
+              </svg>
+              <div class="center">
+                <div class="pct">2500<span class="sym">ml</span></div>
+                <div class="sub">Daily Target</div>
+              </div>
+            </div>
+
+            <hr class="divider">
+            <div class="row"><span class="label">推荐区间</span><span class="value-sm">2000 — 3000 ML</span></div>
+            <div class="row"><span class="label">单次量</span><span class="value">200ml</span></div>
+            <div class="row"><span class="label">提醒间隔</span><span class="value">90 min</span></div>
+
+            <button class="btn-primary" style="margin-top: 16px;">下一步</button>
+            <button class="btn-ghost" style="display:block; margin: 8px auto 0;">跳过</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 引导 3 -->
+    <div>
+      <div class="phone-label"><span>STEP THREE</span><span class="num">iii.</span></div>
+      <div class="phone">
+        <div class="phone-frame">
+          <div class="status-bar"><span>9:41</span><div class="right"><span>5G</span><span class="dot"></span><span>100%</span></div></div>
+          <div class="screen">
+            <div class="hero-label">— Chapter Three —</div>
+            <div class="hero-title">Stay <span class="small">hydrated</span></div>
+            <div class="hero-zh">开启提醒，养成健康习惯。</div>
+
+            <div class="card" style="margin-top: 24px;">
+              <div class="row" style="padding: 6px 0; border:none;">
+                <span class="label">喝水提醒</span>
+                <div class="switch on"></div>
+              </div>
+            </div>
+            <div class="card-light">
+              <div class="row" style="padding: 6px 0; border:none;">
+                <span class="label">通知时段</span>
+                <span class="value-sm">08:00 — 21:00</span>
+              </div>
+            </div>
+            <div class="card-light">
+              <div class="row" style="padding: 6px 0; border:none;">
+                <span class="label">间隔提醒</span>
+                <span class="value-sm">每 90 分钟</span>
+              </div>
+            </div>
+
+            <p style="font-size: 12px; color: var(--ink-3); line-height: 1.6; margin: 20px 0 0;">
+              所有数据仅保存在本机，不上传任何服务器。卸载即彻底清除。
+            </p>
+
+            <button class="btn-primary" style="margin-top: 16px;">开始使用</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============== 02 主页 ============== -->
+<section class="section" id="home">
+  <div class="section-head">
+    <div class="section-num">No. 02</div>
+    <div>
+      <div class="section-title">Home</div>
+      <div class="section-title-zh">主页 · 今日进度</div>
+    </div>
+  </div>
+  <p class="section-lede">首页 = 进度圆 + 今日时间线 + 一个人群切换入口。底部导航 4 项：主页 / 记录 / 提醒 / 我的。</p>
+
+  <div class="phones">
+    <div>
+      <div class="phone-label"><span>HOMEPAGE</span><span class="num">i.</span></div>
+      <div class="phone">
+        <div class="phone-frame">
+          <div class="status-bar"><span>9:41</span><div class="right"><span>5G</span><span class="dot"></span><span>100%</span></div></div>
+          <div class="topbar">
+            <div class="left">
+              <div class="icon-btn">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+              </div>
+            </div>
+            <h2>喝了么</h2>
+            <div class="right">
+              <div class="icon-btn">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="9"/><line x1="12" y1="7" x2="12" y2="12"/><line x1="9" y1="13.5" x2="15" y2="13.5"/></svg>
+              </div>
+            </div>
+          </div>
+
+          <div class="screen">
+            <div style="display: flex; justify-content: space-between; align-items: baseline;">
+              <div>
+                <div class="hero-label">Wednesday · Mar 12</div>
+                <div class="hero-title">Good <span class="small">morning</span></div>
+              </div>
+              <div style="text-align: right;">
+                <div class="hero-label">连续</div>
+                <div class="hero-title" style="font-size: 28px;">07<span class="small">d</span></div>
+              </div>
+            </div>
+
+            <div class="progress-ring" style="width: 220px; height: 220px;">
+              <svg width="220" height="220" viewBox="0 0 220 220">
+                <circle cx="110" cy="110" r="94" fill="none" stroke="#E5E5E5" stroke-width="2"/>
+                <circle cx="110" cy="110" r="94" fill="none" stroke="#111" stroke-width="2"
+                  stroke-dasharray="590" stroke-dashoffset="118" stroke-linecap="square"/>
+              </svg>
+              <div class="center">
+                <div class="pct">1800<span class="sym">ml</span></div>
+                <div class="sub">of 2500 ml</div>
+              </div>
+            </div>
+
+            <div style="text-align: center; margin-top: 8px;">
+              <span class="chip">剩余 700 ml</span>
+              <span class="chip-outline">已喝 5 次</span>
+            </div>
+
+            <hr class="divider">
+
+            <div class="stamp" style="margin-bottom: 10px;">Today's Timeline</div>
+
+            <ul class="timeline">
+              <li>
+                <span class="time">09:12</span>
+                <span class="desc">早安水</span>
+                <span class="amount">250ml</span>
+              </li>
+              <li>
+                <span class="time">10:35</span>
+                <span class="desc">工作间隙</span>
+                <span class="amount">200ml</span>
+              </li>
+              <li>
+                <span class="time">12:08</span>
+                <span class="desc">午休</span>
+                <span class="amount">350ml</span>
+              </li>
+              <li>
+                <span class="time">15:42</span>
+                <span class="desc">下午茶</span>
+                <span class="amount">500ml</span>
+              </li>
+              <li>
+                <span class="time">17:20</span>
+                <span class="desc">下班前</span>
+                <span class="amount">500ml</span>
+              </li>
+            </ul>
+
+            <div class="card-light" style="margin-top: 8px;">
+              <div class="row" style="padding: 4px 0; border: none;">
+                <span class="label">当前人群</span>
+                <span class="value">成年女性</span>
+              </div>
+            </div>
+
+            <button class="btn-primary" style="margin-top: 12px;">记一杯水</button>
+          </div>
+
+          <div class="bottom-nav">
+            <div class="item active">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 12 L12 4 L21 12 M5 10 V20 H19 V10"/></svg>
+              <span>Home</span>
+            </div>
+            <div class="item">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="4" width="18" height="17"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="16" y1="2" x2="16" y2="6"/></svg>
+              <span>Record</span>
+            </div>
+            <div class="item">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 3 a9 9 0 0 1 9 9 c0 4-3 6-3 9 H6 c0-3-3-5-3-9 a9 9 0 0 1 9-9 z"/><line x1="9" y1="14" x2="15" y2="14"/></svg>
+              <span>Alert</span>
+            </div>
+            <div class="item">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="8" r="4"/><path d="M4 21 a8 8 0 0 1 16 0"/></svg>
+              <span>Me</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 主页（暗色态） -->
+    <div>
+      <div class="phone-label"><span>DARK MODE</span><span class="num">ii.</span></div>
+      <div class="phone" style="background: #0D0D0D;">
+        <div class="phone-frame" style="background: #0D0D0D; color: #FAFAF7; border-color: #2A2A2A;">
+          <div class="status-bar" style="color:#FAFAF7;"><span>9:41</span><div class="right"><span>5G</span><span class="dot" style="background:#FAFAF7"></span><span>100%</span></div></div>
+          <div class="topbar" style="border-color: #2A2A2A;">
+            <div class="left">
+              <div class="icon-btn" style="color:#FAFAF7;">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+              </div>
+            </div>
+            <h2 style="color:#FAFAF7;">喝了么</h2>
+            <div class="right">
+              <div class="icon-btn" style="color:#FAFAF7;">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="9"/><line x1="12" y1="7" x2="12" y2="12"/><line x1="9" y1="13.5" x2="15" y2="13.5"/></svg>
+              </div>
+            </div>
+          </div>
+          <div class="screen" style="background:#0D0D0D; color:#FAFAF7;">
+            <div style="display: flex; justify-content: space-between; align-items: baseline;">
+              <div>
+                <div class="hero-label" style="color:#A0A0A0;">Wednesday · Mar 12</div>
+                <div class="hero-title" style="color:#FAFAF7;">Good <span class="small">morning</span></div>
+              </div>
+              <div style="text-align: right;">
+                <div class="hero-label" style="color:#A0A0A0;">连续</div>
+                <div class="hero-title" style="font-size: 28px; color:#FAFAF7;">07<span class="small" style="color:#A0A0A0;">d</span></div>
+              </div>
+            </div>
+            <div class="progress-ring" style="width: 220px; height: 220px;">
+              <svg width="220" height="220" viewBox="0 0 220 220">
+                <circle cx="110" cy="110" r="94" fill="none" stroke="#2A2A2A" stroke-width="2"/>
+                <circle cx="110" cy="110" r="94" fill="none" stroke="#FAFAF7" stroke-width="2"
+                  stroke-dasharray="590" stroke-dashoffset="118" stroke-linecap="square"/>
+              </svg>
+              <div class="center">
+                <div class="pct" style="color:#FAFAF7;">1800<span class="sym" style="color:#A0A0A0;">ml</span></div>
+                <div class="sub" style="color:#A0A0A0;">of 2500 ml</div>
+              </div>
+            </div>
+            <div style="text-align: center; margin-top: 8px;">
+              <span class="chip" style="border-color:#FAFAF7; color:#FAFAF7;">剩余 700 ml</span>
+              <span class="chip-outline" style="border-color:#2A2A2A; color:#A0A0A0;">已喝 5 次</span>
+            </div>
+            <hr class="divider" style="border-color:#2A2A2A;">
+            <div class="stamp" style="margin-bottom: 10px; border-color:#A0A0A0; color:#A0A0A0;">Today's Timeline</div>
+            <ul class="timeline" style="color:#FAFAF7;">
+              <li><span class="time">09:12</span><span class="desc">早安水</span><span class="amount">250ml</span></li>
+              <li><span class="time">10:35</span><span class="desc">工作间隙</span><span class="amount">200ml</span></li>
+              <li><span class="time">12:08</span><span class="desc">午休</span><span class="amount">350ml</span></li>
+              <li><span class="time">15:42</span><span class="desc">下午茶</span><span class="amount">500ml</span></li>
+              <li><span class="time">17:20</span><span class="desc">下班前</span><span class="amount">500ml</span></li>
+            </ul>
+            <button class="btn-primary" style="margin-top: 12px; background:#FAFAF7; color:#111;">记一杯水</button>
+          </div>
+          <div class="bottom-nav" style="background:#0D0D0D; border-color:#FAFAF7;">
+            <div class="item active" style="background:#FAFAF7; color:#0D0D0D;">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 12 L12 4 L21 12 M5 10 V20 H19 V10"/></svg>
+              <span>Home</span>
+            </div>
+            <div class="item" style="color:#FAFAF7; border-color:#2A2A2A;">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="4" width="18" height="17"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="16" y1="2" x2="16" y2="6"/></svg>
+              <span>Record</span>
+            </div>
+            <div class="item" style="color:#FAFAF7; border-color:#2A2A2A;">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 3 a9 9 0 0 1 9 9 c0 4-3 6-3 9 H6 c0-3-3-5-3-9 a9 9 0 0 1 9-9 z"/><line x1="9" y1="14" x2="15" y2="14"/></svg>
+              <span>Alert</span>
+            </div>
+            <div class="item" style="color:#FAFAF7; border-color:#2A2A2A;">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="8" r="4"/><path d="M4 21 a8 8 0 0 1 16 0"/></svg>
+              <span>Me</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============== 03 打卡弹层 ============== -->
+<section class="section" id="sheet">
+  <div class="section-head">
+    <div class="section-num">No. 03</div>
+    <div>
+      <div class="section-title">Drink Sheet</div>
+      <div class="section-title-zh">打卡弹层 · 快捷 + 自定义</div>
+    </div>
+  </div>
+  <p class="section-lede">底部抽屉：4 个常用量 chip + 自定义输入 + 主操作。chip 选中态用纯黑底白字，无彩色。</p>
+
+  <div class="phones">
+    <div>
+      <div class="phone-label"><span>QUICK PICK</span><span class="num">i.</span></div>
+      <div class="phone">
+        <div class="phone-frame">
+          <div class="status-bar"><span>9:41</span><div class="right"><span>5G</span><span class="dot"></span><span>100%</span></div></div>
+          <div class="screen" style="position: relative; background: var(--paper-2);">
+            <div style="opacity: 0.4;">
+              <div class="hero-label">Wednesday · Mar 12</div>
+              <div class="hero-title">Good <span class="small">morning</span></div>
+              <div class="progress-ring" style="width: 200px; height: 200px;">
+                <svg width="200" height="200" viewBox="0 0 200 200">
+                  <circle cx="100" cy="100" r="86" fill="none" stroke="#E5E5E5" stroke-width="2"/>
+                  <circle cx="100" cy="100" r="86" fill="none" stroke="#111" stroke-width="2"
+                    stroke-dasharray="540" stroke-dashoffset="108" stroke-linecap="square"/>
+                </svg>
+                <div class="center">
+                  <div class="pct">1800<span class="sym">ml</span></div>
+                  <div class="sub">of 2500 ml</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="bottom-sheet">
+              <div class="sheet-handle"></div>
+              <div class="hero-label">Record Drink</div>
+              <div style="display: flex; justify-content: space-between; align-items: baseline; margin-top: 4px;">
+                <div class="hero-title" style="font-size: 32px;">200<span class="small">ml</span></div>
+                <span class="chip-outline">成年女性</span>
+              </div>
+
+              <div style="display: flex; gap: 8px; margin: 16px 0 12px; flex-wrap: wrap;">
+                <span class="chip" style="background: var(--ink); color: var(--paper);">150 ml</span>
+                <span class="chip" style="background: var(--ink); color: var(--paper);">200 ml</span>
+                <span class="chip">250 ml</span>
+                <span class="chip">500 ml</span>
+              </div>
+
+              <hr class="divider" style="margin: 12px 0;">
+
+              <div style="display: flex; align-items: baseline; gap: 12px; margin-bottom: 16px;">
+                <span class="label" style="font-size: 12px; color: var(--ink-3);">自定义</span>
+                <span style="font-family: var(--font-en); font-style: italic; font-size: 28px; color: var(--ink);">320</span>
+                <span style="font-size: 12px; color: var(--ink-3);">ml</span>
+              </div>
+
+              <button class="btn-primary">确认记录</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============== 04 人群类型 ============== -->
+<section class="section" id="person">
+  <div class="section-head">
+    <div class="section-num">No. 04</div>
+    <div>
+      <div class="section-title">Person Types</div>
+      <div class="section-title-zh">人群类型 · 列表 + 编辑</div>
+    </div>
+  </div>
+  <p class="section-lede">列表采用报头式排版，编辑页采用分段式表单。预设项不可删除（仅灰色显示）。</p>
+
+  <div class="phones">
+    <div>
+      <div class="phone-label"><span>LIST</span><span class="num">i.</span></div>
+      <div class="phone">
+        <div class="phone-frame">
+          <div class="status-bar"><span>9:41</span><div class="right"><span>5G</span><span class="dot"></span><span>100%</span></div></div>
+          <div class="topbar">
+            <div class="left">
+              <div class="icon-btn">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="15 6 9 12 15 18"/></svg>
+              </div>
+            </div>
+            <h2>人群类型</h2>
+            <div class="right"><div style="width:28px"></div></div>
+          </div>
+          <div class="screen">
+            <div class="hero-label">A. Curated</div>
+            <div class="hero-title">Person <span class="small">types</span></div>
+            <p class="hero-zh">根据你的身份选择合适的饮水量。</p>
+
+            <div class="card" style="margin-top: 16px;">
+              <div class="card-num">No. 01</div>
+              <div class="card-title">成年女性</div>
+              <div class="card-text">日目标 2000ml · 单次 200ml · 间隔 120min<br>通知时段 08:00 — 21:00</div>
+              <div style="display: flex; gap: 8px; margin-top: 12px;">
+                <span class="chip">当前</span>
+                <span class="chip-outline">编辑</span>
+              </div>
+            </div>
+
+            <div class="card-light">
+              <div class="card-num">No. 02</div>
+              <div style="display: flex; justify-content: space-between; align-items: baseline;">
+                <div>
+                  <div class="card-title" style="margin: 4px 0 4px;">成年男性</div>
+                  <div class="card-text">日目标 2500ml · 间隔 90min</div>
+                </div>
+                <span class="value-sm">SELECT</span>
+              </div>
+            </div>
+
+            <div class="card-light">
+              <div class="card-num">No. 03</div>
+              <div style="display: flex; justify-content: space-between; align-items: baseline;">
+                <div>
+                  <div class="card-title" style="margin: 4px 0 4px;">运动人群</div>
+                  <div class="card-text">日目标 3000ml · 间隔 60min</div>
+                </div>
+                <span class="value-sm">SELECT</span>
+              </div>
+            </div>
+
+            <button class="btn-secondary" style="margin-top: 16px;">+ 新增自定义类型</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 编辑页 -->
+    <div>
+      <div class="phone-label"><span>EDIT FORM</span><span class="num">ii.</span></div>
+      <div class="phone">
+        <div class="phone-frame">
+          <div class="status-bar"><span>9:41</span><div class="right"><span>5G</span><span class="dot"></span><span>100%</span></div></div>
+          <div class="topbar">
+            <div class="left">
+              <div class="icon-btn">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="6" y1="6" x2="18" y2="18"/><line x1="6" y1="18" x2="18" y2="6"/></svg>
+              </div>
+            </div>
+            <h2>编辑</h2>
+            <div class="right"><span class="btn-link">保存</span></div>
+          </div>
+          <div class="screen">
+            <div class="hero-label">No. 02</div>
+            <div class="hero-title" style="font-size: 32px;">Person <span class="small">type</span></div>
+
+            <div class="card-light" style="margin-top: 16px;">
+              <div class="row" style="border: none; padding: 8px 0;">
+                <span class="label">类型名称</span>
+                <span class="value">成年男性</span>
+              </div>
+            </div>
+            <div class="card-light">
+              <div class="row" style="border: none; padding: 8px 0;">
+                <span class="label">日目标</span>
+                <span class="value">2500 <span style="font-size: 12px; color: var(--ink-3);">ml</span></span>
+              </div>
+            </div>
+            <div class="card-light">
+              <div class="row" style="border: none; padding: 8px 0;">
+                <span class="label">单次量</span>
+                <span class="value">250 <span style="font-size: 12px; color: var(--ink-3);">ml</span></span>
+              </div>
+            </div>
+            <div class="card-light">
+              <div class="row" style="border: none; padding: 8px 0;">
+                <span class="label">提醒间隔</span>
+                <span class="value">90 <span style="font-size: 12px; color: var(--ink-3);">min</span></span>
+              </div>
+            </div>
+
+            <div class="stamp" style="margin: 24px 0 8px;">Notification Window</div>
+            <div class="card-light">
+              <div class="row" style="border: none; padding: 8px 0;">
+                <span class="label">开始</span>
+                <span class="value">08:00</span>
+              </div>
+            </div>
+            <div class="card-light">
+              <div class="row" style="border: none; padding: 8px 0;">
+                <span class="label">结束</span>
+                <span class="value">21:00</span>
+              </div>
+            </div>
+
+            <button class="btn-primary" style="margin-top: 24px;">保存修改</button>
+            <button class="btn-ghost" style="display: block; margin: 12px auto 0; color: var(--danger);">删除此类型</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============== 05 提醒时间 ============== -->
+<section class="section" id="reminder">
+  <div class="section-head">
+    <div class="section-num">No. 05</div>
+    <div>
+      <div class="section-title">Reminder Times</div>
+      <div class="section-title-zh">固定时间提醒</div>
+    </div>
+  </div>
+  <p class="section-lede">每个固定时间点 = 一行记录。开关在右侧，滑动删除。报纸式行号 01 02 03。</p>
+
+  <div class="phones">
+    <div>
+      <div class="phone-label"><span>REMINDER LIST</span><span class="num">i.</span></div>
+      <div class="phone">
+        <div class="phone-frame">
+          <div class="status-bar"><span>9:41</span><div class="right"><span>5G</span><span class="dot"></span><span>100%</span></div></div>
+          <div class="topbar">
+            <div class="left">
+              <div class="icon-btn">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="15 6 9 12 15 18"/></svg>
+              </div>
+            </div>
+            <h2>提醒时间</h2>
+            <div class="right"><div class="icon-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></div></div>
+          </div>
+          <div class="screen">
+            <div class="hero-label">Schedule</div>
+            <div class="hero-title">Reminder <span class="small">times</span></div>
+            <p class="hero-zh">共 4 个时间点 · 全部启用</p>
+
+            <ul class="numbered" style="margin-top: 16px;">
+              <li>
+                <div>
+                  <b>08:30 · 早起第一杯</b>
+                  <p>每日 · 200 ml</p>
+                </div>
+              </li>
+              <li>
+                <div>
+                  <b>11:00 · 上午补水</b>
+                  <p>每日 · 250 ml</p>
+                </div>
+              </li>
+              <li>
+                <div>
+                  <b>15:00 · 下午茶</b>
+                  <p>每日 · 300 ml</p>
+                </div>
+              </li>
+              <li>
+                <div>
+                  <b>19:30 · 晚饭前</b>
+                  <p>每日 · 200 ml</p>
+                </div>
+              </li>
+            </ul>
+
+            <button class="btn-secondary" style="margin-top: 20px;">+ 添加时间点</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============== 06 记录·日 ============== -->
+<section class="section" id="record-day">
+  <div class="section-head">
+    <div class="section-num">No. 06</div>
+    <div>
+      <div class="section-title">Records · Day</div>
+      <div class="section-title-zh">记录页 · 按日查看</div>
+    </div>
+  </div>
+  <p class="section-lede">顶部日期选择器 + 4 个 Tab（按日/按月/趋势/统计）。当日所有记录以时间线呈现。</p>
+
+  <div class="phones">
+    <div>
+      <div class="phone-label"><span>BY DAY</span><span class="num">i.</span></div>
+      <div class="phone">
+        <div class="phone-frame">
+          <div class="status-bar"><span>9:41</span><div class="right"><span>5G</span><span class="dot"></span><span>100%</span></div></div>
+          <div class="topbar">
+            <div class="left">
+              <div class="icon-btn">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="15 6 9 12 15 18"/></svg>
+              </div>
+            </div>
+            <h2>喝水记录</h2>
+            <div class="right"><div class="icon-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/><path d="M3 17 v3 a2 2 0 0 0 2 2 h14 a2 2 0 0 0 2-2 v-3"/></svg></div></div>
+          </div>
+          <div class="screen">
+            <!-- 日期选择 -->
+            <div style="display: flex; justify-content: space-between; align-items: center; padding: 8px 0;">
+              <div class="icon-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="15 18 9 12 15 6"/></svg></div>
+              <div>
+                <div class="hero-label">Selected</div>
+                <div class="hero-title" style="font-size: 24px;">2026 · 03 · 12</div>
+              </div>
+              <div class="icon-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="9 18 15 12 9 6"/></svg></div>
+            </div>
+
+            <hr class="divider-thick">
+
+            <div class="tabs">
+              <div class="tab active">Day</div>
+              <div class="tab">Month</div>
+              <div class="tab">Chart</div>
+              <div class="tab">Stats</div>
+            </div>
+
+            <div class="card">
+              <div class="card-num">Daily Total</div>
+              <div style="display: flex; align-items: baseline; gap: 8px; margin: 4px 0 8px;">
+                <span class="hero-title" style="font-size: 48px;">1800</span>
+                <span class="hero-zh" style="margin: 0;">ml / 2500ml</span>
+              </div>
+              <span class="chip">未达标</span>
+            </div>
+
+            <div class="stamp" style="margin: 16px 0 8px;">5 Records</div>
+
+            <ul class="timeline">
+              <li><span class="time">09:12</span><span class="desc">早安水</span><span class="amount">250ml</span></li>
+              <li><span class="time">10:35</span><span class="desc">工作间隙</span><span class="amount">200ml</span></li>
+              <li><span class="time">12:08</span><span class="desc">午休</span><span class="amount">350ml</span></li>
+              <li><span class="time">15:42</span><span class="desc">下午茶</span><span class="amount">500ml</span></li>
+              <li><span class="time">17:20</span><span class="desc">下班前</span><span class="amount">500ml</span></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============== 07 记录·月 ============== -->
+<section class="section" id="record-month">
+  <div class="section-head">
+    <div class="section-num">No. 07</div>
+    <div>
+      <div class="section-title">Records · Month</div>
+      <div class="section-title-zh">记录页 · 按月查看</div>
+    </div>
+  </div>
+  <p class="section-lede">每月一张日列表，达标日打勾。报头式排版，强化每月对比。</p>
+
+  <div class="phones">
+    <div>
+      <div class="phone-label"><span>BY MONTH</span><span class="num">i.</span></div>
+      <div class="phone">
+        <div class="phone-frame">
+          <div class="status-bar"><span>9:41</span><div class="right"><span>5G</span><span class="dot"></span><span>100%</span></div></div>
+          <div class="topbar">
+            <div class="left"><div class="icon-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="15 18 9 12 15 6"/></svg></div></div>
+            <h2>2026 · 03</h2>
+            <div class="right"><div class="icon-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="9 18 15 12 9 6"/></svg></div></div>
+          </div>
+          <div class="screen">
+            <div class="card" style="margin-top: 8px;">
+              <div class="card-num">Monthly Total</div>
+              <div style="display: flex; align-items: baseline; gap: 8px; margin-top: 4px;">
+                <span class="hero-title" style="font-size: 48px;">48.6</span>
+                <span class="hero-zh" style="margin: 0;">L · 22 / 31 days</span>
+              </div>
+              <div style="margin-top: 8px;">
+                <span class="chip">达标 22 天</span>
+                <span class="chip-outline">平均 2210ml</span>
+              </div>
+            </div>
+
+            <hr class="divider">
+
+            <ul class="numbered">
+              <li><div><b>03 · 12</b><p>1800ml · 5 次 · 周末</p></div></li>
+              <li><div><b>03 · 11</b><p>2400ml · 7 次 · 达标</p></div></li>
+              <li><div><b>03 · 10</b><p>2100ml · 6 次 · 达标</p></div></li>
+              <li><div><b>03 · 09</b><p>2500ml · 8 次 · 达标</p></div></li>
+              <li><div><b>03 · 08</b><p>1950ml · 5 次 · 周日</p></div></li>
+              <li><div><b>03 · 07</b><p>2200ml · 6 次 · 达标</p></div></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============== 08 趋势图 ============== -->
+<section class="section" id="chart">
+  <div class="section-head">
+    <div class="section-num">No. 08</div>
+    <div>
+      <div class="section-title">Trend Chart</div>
+      <div class="section-title-zh">趋势图 · 极简柱状</div>
+    </div>
+  </div>
+  <p class="section-lede">放弃彩色图表，仅用黑色柱 + 灰色虚线目标线。柱顶标数值，月维度展示一个月。</p>
+
+  <div class="phones">
+    <div>
+      <div class="phone-label"><span>BAR CHART</span><span class="num">i.</span></div>
+      <div class="phone">
+        <div class="phone-frame">
+          <div class="status-bar"><span>9:41</span><div class="right"><span>5G</span><span class="dot"></span><span>100%</span></div></div>
+          <div class="topbar">
+            <div class="left"><div class="icon-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="15 18 9 12 15 6"/></svg></div></div>
+            <h2>趋势图</h2>
+            <div class="right"><div style="width:28px"></div></div>
+          </div>
+          <div class="screen">
+            <div class="hero-label">30 Days Trend</div>
+            <div class="hero-title" style="font-size: 32px;">Daily <span class="small">intake</span></div>
+
+            <div style="display: flex; gap: 8px; margin: 16px 0;">
+              <span class="chip" style="background: var(--ink); color: var(--paper);">柱状</span>
+              <span class="chip-outline">折线</span>
+            </div>
+
+            <div class="chart-area">
+              <div class="chart-bar" style="left: 4%; height: 35%;"></div>
+              <div class="chart-bar" style="left: 14%; height: 60%;"></div>
+              <div class="chart-bar" style="left: 24%; height: 80%;"></div>
+              <div class="chart-bar" style="left: 34%; height: 100%;"></div>
+              <div class="chart-bar" style="left: 44%; height: 75%;"></div>
+              <div class="chart-bar" style="left: 54%; height: 50%;"></div>
+              <div class="chart-bar" style="left: 64%; height: 88%;"></div>
+              <div class="chart-bar" style="left: 74%; height: 95%;"></div>
+              <div class="chart-bar" style="left: 84%; height: 40%;"></div>
+              <div class="chart-bar" style="left: 94%; height: 30%;"></div>
+            </div>
+
+            <div class="chart-axis">
+              <span>03/01</span><span>03/05</span><span>03/10</span><span>03/15</span><span>03/20</span><span>03/25</span><span>03/30</span>
+            </div>
+
+            <hr class="divider">
+
+            <div class="row"><span class="label">达标日数</span><span class="value">22 / 30</span></div>
+            <div class="row"><span class="label">日均</span><span class="value">2210 ml</span></div>
+            <div class="row"><span class="label">最高日</span><span class="value">03 · 14</span></div>
+            <div class="row"><span class="label">最低日</span><span class="value">03 · 02</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============== 09 统计 ============== -->
+<section class="section" id="stats">
+  <div class="section-head">
+    <div class="section-num">No. 09</div>
+    <div>
+      <div class="section-title">Statistics</div>
+      <div class="section-title-zh">统计洞察 · 数字即版面</div>
+    </div>
+  </div>
+  <p class="section-lede">数字即版面：大号斜体英文作主数字，小号中文注释。所有数据采用 grid 排版，无卡片无彩色。</p>
+
+  <div class="phones">
+    <div>
+      <div class="phone-label"><span>WEEKLY STATS</span><span class="num">i.</span></div>
+      <div class="phone">
+        <div class="phone-frame">
+          <div class="status-bar"><span>9:41</span><div class="right"><span>5G</span><span class="dot"></span><span>100%</span></div></div>
+          <div class="topbar">
+            <div class="left"><div class="icon-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="15 18 9 12 15 6"/></svg></div></div>
+            <h2>本周统计</h2>
+            <div class="right"><div style="width:28px"></div></div>
+          </div>
+          <div class="screen">
+            <div class="hero-label">Mar 06 — Mar 12</div>
+            <div class="hero-title" style="font-size: 36px;">This <span class="small">week</span></div>
+
+            <div class="stat">
+              <div class="item">
+                <div class="label">Daily Avg</div>
+                <div class="value">2210<span class="unit"> ml</span></div>
+              </div>
+              <div class="item">
+                <div class="label">Goal Rate</div>
+                <div class="value">71<span class="unit">%</span></div>
+              </div>
+              <div class="item">
+                <div class="label">Total</div>
+                <div class="value">15.5<span class="unit"> L</span></div>
+              </div>
+              <div class="item">
+                <div class="label">Drinks</div>
+                <div class="value">38<span class="unit"> 次</span></div>
+              </div>
+            </div>
+
+            <hr class="divider-thick">
+
+            <div class="stamp" style="margin-bottom: 10px;">Highlights</div>
+
+            <div class="row"><span class="label">最活跃时段</span><span class="value-sm">14:00 — 16:00</span></div>
+            <div class="row"><span class="label">最佳一天</span><span class="value">周三 · 2800ml</span></div>
+            <div class="row"><span class="label">最长连续</span><span class="value">7 天</span></div>
+            <div class="row"><span class="label">平均间隔</span><span class="value-sm">2 H 35 MIN</span></div>
+
+            <hr class="divider">
+
+            <div class="pullquote" style="font-size: 16px;">
+              比上周多喝 <b>1.2 L</b>，继续保持。
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============== 10 全屏提醒 ============== -->
+<section class="section" id="fullscreen">
+  <div class="section-head">
+    <div class="section-num">No. 10</div>
+    <div>
+      <div class="section-title">Fullscreen Alert</div>
+      <div class="section-title-zh">全屏提醒 · 锁屏弹起</div>
+    </div>
+  </div>
+  <p class="section-lede">从彩色全屏改为米白极简：报头大字 + 短引文 + 主操作"干杯"。无 GIF，无彩色，强化"专注喝水"。</p>
+
+  <div class="phones">
+    <div>
+      <div class="phone-label"><span>LOCK SCREEN</span><span class="num">i.</span></div>
+      <div class="phone">
+        <div class="phone-frame">
+          <div class="status-bar"><span>15:00</span><div class="right"><span>5G</span><span class="dot"></span><span>100%</span></div></div>
+          <div class="fullscreen">
+            <div class="hero-label">— Reminder —</div>
+            <div class="display">250<span class="small">ml</span></div>
+            <p class="quote">"该喝水啦，别让身体喊渴。"</p>
+            <p class="meta">03 · 12 · 15:00</p>
+
+            <button class="btn-primary" style="width: 220px; margin-bottom: 12px;">干杯</button>
+            <button class="btn-ghost">10 分钟后再提醒</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 达标态 -->
+    <div>
+      <div class="phone-label"><span>GOAL REACHED</span><span class="num">ii.</span></div>
+      <div class="phone">
+        <div class="phone-frame">
+          <div class="status-bar"><span>19:30</span><div class="right"><span>5G</span><span class="dot"></span><span>100%</span></div></div>
+          <div class="fullscreen">
+            <div class="hero-label">— Goal Reached —</div>
+            <div class="display" style="font-size: 64px;">Bravo.</div>
+            <p class="quote">"今日目标 2500ml 已达成。"</p>
+            <p class="meta">连续 7 天</p>
+
+            <button class="btn-primary" style="width: 220px;">收下这份奖励</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============== 11 关于 ============== -->
+<section class="section" id="about">
+  <div class="section-head">
+    <div class="section-num">No. 11</div>
+    <div>
+      <div class="section-title">About &amp; Privacy</div>
+      <div class="section-title-zh">关于 · 隐私</div>
+    </div>
+  </div>
+  <p class="section-lede">关于页采用报纸头版式：版本号作主标，版本历史分段，隐私与数据独立章节。强调"本地存储 · 零数据风险"。</p>
+
+  <div class="phones">
+    <div>
+      <div class="phone-label"><span>ABOUT</span><span class="num">i.</span></div>
+      <div class="phone">
+        <div class="phone-frame">
+          <div class="status-bar"><span>9:41</span><div class="right"><span>5G</span><span class="dot"></span><span>100%</span></div></div>
+          <div class="topbar">
+            <div class="left"><div class="icon-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="15 18 9 12 15 6"/></svg></div></div>
+            <h2>关于</h2>
+            <div class="right"><div style="width:28px"></div></div>
+          </div>
+          <div class="screen">
+            <div class="hero-label">Vol. 02 · No. 14</div>
+            <div class="hero-title">喝了么</div>
+            <div class="hero-zh">v1.3.2 · 2026 · 喝水提醒</div>
+
+            <hr class="divider-thick">
+
+            <div class="stamp" style="margin-bottom: 10px;">What's New</div>
+            <ul class="numbered">
+              <li><div><b>隐私与数据</b><p>新增独立章节，说明本地存储与零数据风险。</p></div></li>
+              <li><div><b>UI v2.0</b><p>黑白色调重构，统一报头式排版。</p></div></li>
+              <li><div><b>记录补录</b><p>支持滑动补加历史记录。</p></div></li>
+            </ul>
+
+            <hr class="divider">
+
+            <div class="stamp" style="margin-bottom: 10px; color: var(--ink); border-color: var(--ink);">Privacy &amp; Data</div>
+            <p style="font-size: 13px; color: var(--ink-2); line-height: 1.6; margin-bottom: 12px;">
+              <b>本地存储 · 零数据风险</b>
+            </p>
+            <ul class="numbered">
+              <li><div><b>本地数据库</b><p>所有记录仅保存在本机，绝不上传。</p></div></li>
+              <li><div><b>零追踪</b><p>不接入统计、广告、追踪 SDK。</p></div></li>
+              <li><div><b>极简权限</b><p>仅申请通知与闹钟相关权限。</p></div></li>
+              <li><div><b>卸载即清</b><p>卸载应用即彻底清除全部数据。</p></div></li>
+              <li><div><b>开源透明</b><p>更新检测直接调用 Gitee / GitHub 官方 API。</p></div></li>
+            </ul>
+
+            <hr class="divider">
+
+            <div style="display: flex; justify-content: space-between; font-family: var(--font-mono); font-size: 10px; color: var(--ink-3); letter-spacing: 1.5px; margin-top: 16px;">
+              <span>EST. 2026</span>
+              <span>© HELIANG</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============== 12 通知 ============== -->
+<section class="section" id="notif">
+  <div class="section-head">
+    <div class="section-num">No. 12</div>
+    <div>
+      <div class="section-title">Notifications</div>
+      <div class="section-title-zh">通知样式 · 黑白 + 快速打卡</div>
+    </div>
+  </div>
+  <p class="section-lede">通知卡片用纯白底 + 黑色 1px 描边。应用图标改为字母 W。快捷动作"200 / 300 ml"。</p>
+
+  <div class="phones">
+    <div>
+      <div class="phone-label"><span>INTERVAL</span><span class="num">i.</span></div>
+      <div class="phone" style="background: var(--paper-2);">
+        <div class="phone-frame" style="background: var(--paper-2); border-color: var(--rule);">
+          <div class="status-bar"><span>15:00</span><div class="right"><span>5G</span><span class="dot"></span><span>100%</span></div></div>
+          <div class="screen">
+            <div class="hero-label" style="margin-bottom: 16px;">Notification Preview</div>
+            <div class="notification">
+              <div class="avatar">W</div>
+              <div>
+                <div class="title">喝了么 · 该喝水了</div>
+                <div class="body">建议饮用 250 ml，保持身体水分。</div>
+                <div class="actions">
+                  <div class="action primary">喝了 200 ml</div>
+                  <div class="action">喝了 300 ml</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="hero-label" style="margin: 24px 0 16px;">Small Cycle</div>
+            <div class="notification" style="border-style: dashed;">
+              <div class="avatar">W</div>
+              <div>
+                <div class="title">喝了么 · 小提醒</div>
+                <div class="body">水杯都等急了！该喝水啦～</div>
+                <div class="actions">
+                  <div class="action primary">喝了 200 ml</div>
+                  <div class="action">稍后</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============== 13 小组件 ============== -->
+<section class="section" id="widget">
+  <div class="section-head">
+    <div class="section-num">No. 13</div>
+    <div>
+      <div class="section-title">Widgets</div>
+      <div class="section-title-zh">桌面小组件 · 极简</div>
+    </div>
+  </div>
+  <p class="section-lede">放弃彩色蓝渐变，改用米白底 + 黑字。1px 黑边，方形 border-radius 0。柱状进度条纯黑。</p>
+
+  <div class="phones" style="grid-template-columns: 1fr;">
+    <div>
+      <div class="phone-label"><span>HOME SCREEN</span><span class="num">i.</span></div>
+      <div class="phone" style="background: var(--paper-2);">
+        <div class="phone-frame" style="background: #FAFAF7; aspect-ratio: 9/16;">
+          <div class="status-bar"><span>9:41</span><div class="right"><span>5G</span><span class="dot"></span><span>100%</span></div></div>
+          <div class="screen" style="background: #FAFAF7; padding-top: 24px;">
+            <div style="font-family: var(--font-en); font-style: italic; font-size: 36px; color: var(--ink); margin-bottom: 4px;">Wednesday</div>
+            <div style="font-size: 12px; color: var(--ink-3); letter-spacing: 1px; margin-bottom: 24px;">12 MARCH 2026</div>
+
+            <div class="widget-grid">
+              <div class="widget">
+                <div class="wt-title">Today</div>
+                <div class="wt-num">72<span style="font-size: 14px; color: var(--ink-3);">%</span></div>
+                <div class="wt-bar"></div>
+                <div class="wt-foot">
+                  <span>1800</span><span>2500 ml</span>
+                </div>
+              </div>
+              <div class="widget">
+                <div class="wt-title">Streak</div>
+                <div class="wt-num">07<span style="font-size: 14px; color: var(--ink-3);">d</span></div>
+                <div class="wt-bar"></div>
+                <div class="wt-foot">
+                  <span>个人最佳</span><span>15d</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="widget-grid" style="margin-top: 12px;">
+              <div class="widget wide">
+                <div class="wt-title">Quick Drink</div>
+                <div style="display: flex; align-items: baseline; gap: 8px;">
+                  <div class="wt-num">250<span style="font-size: 16px; color: var(--ink-3);">ml</span></div>
+                  <div style="font-size: 11px; color: var(--ink-3); letter-spacing: 1.5px; margin-left: auto;">单击记录</div>
+                </div>
+                <div class="wt-bar"></div>
+                <div class="wt-foot">
+                  <span>剩余 700 ml</span>
+                  <span>成年女性</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============== 页脚 ============== -->
+<footer class="section" style="border-top: 2px solid var(--ink); padding-top: 32px;">
+  <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 32px; font-size: 12px; color: var(--ink-3);">
+    <div>
+      <div class="stamp" style="color: var(--ink); border-color: var(--ink); margin-bottom: 8px;">Spec</div>
+      <p>v2.0 · 2026 · 极简黑白设计语言</p>
+    </div>
+    <div>
+      <div class="stamp" style="color: var(--ink); border-color: var(--ink); margin-bottom: 8px;">Contrast</div>
+      <p>主文字 19.3:1 · 正文 17.5:1 · 副文字 5.7:1</p>
+    </div>
+    <div>
+      <div class="stamp" style="color: var(--ink); border-color: var(--ink); margin-bottom: 8px;">Palette</div>
+      <p>黑 10% · 灰 25% · 米白 60% · 危险 &lt;1%</p>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

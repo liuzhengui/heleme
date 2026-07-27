@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_reminder_times"
+            android:icon="@drawable/ic_notification"
+            android:title="提醒时间" />
+        <item
+            android:id="@+id/nav_records"
+            android:icon="@drawable/ic_calendar"
+            android:title="喝水记录" />
+        <item
+            android:id="@+id/nav_person_types"
+            android:icon="@drawable/ic_add"
+            android:title="人群类型" />
+    </group>
+
+    <group android:id="@+id/group_switches">
+        <item
+            android:id="@+id/nav_reminder_switch"
+            android:icon="@drawable/ic_water_reminder"
+            android:title="喝水提醒"
+            app:actionLayout="@layout/nav_item_switch" />
+        <item
+            android:id="@+id/nav_auto_start_switch"
+            android:icon="@drawable/ic_power"
+            android:title="自动启动"
+            app:actionLayout="@layout/nav_item_switch" />
+    </group>
+
+    <group>
+        <item
+            android:id="@+id/nav_about"
+            android:icon="@drawable/ic_about"
+            android:title="关于" />
+    </group>
+</menu>

@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>喝了么 · 编辑人群类型</title>
+
+<link rel="stylesheet" href="styles.css?v=2" />
+</head>
+<body>
+<div class="phone-stage">
+  <div class="phone">
+    <div class="phone-frame">
+
+      <div class="status-bar">
+        <span>9:41</span>
+        <div class="right"><span>5G</span><span class="dot"></span><span>100%</span></div>
+      </div>
+
+      <div class="topbar">
+        <div class="left">
+          <a href="person-types.html" class="icon-btn" aria-label="返回">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="15 18 9 12 15 6"/></svg>
+          </a>
+        </div>
+        <h2>编辑类型</h2>
+        <div class="right">
+          <a href="person-types.html" class="btn-link">保存</a>
+        </div>
+      </div>
+
+      <div class="screen">
+        <div class="hero-label">No. 02</div>
+        <div class="hero-title" style="font-size: 32px;">Person <span class="small">type</span></div>
+
+        <div class="form-group" style="margin-top: 20px;">
+          <label class="form-label">类型名称</label>
+          <input type="text" class="form-input" value="成年男性" />
+        </div>
+        <div class="form-group">
+          <label class="form-label">每日目标</label>
+          <input type="number" class="form-input" value="2500" />
+          <div class="form-hint">建议范围 1500 — 4000 ml</div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">单次饮水量</label>
+          <input type="number" class="form-input" value="250" />
+        </div>
+        <div class="form-group">
+          <label class="form-label">提醒间隔</label>
+          <input type="number" class="form-input" value="90" />
+          <div class="form-hint">单位：分钟</div>
+        </div>
+
+        <div class="stamp" style="margin: 24px 0 12px;">Notification Window</div>
+
+        <div class="form-group">
+          <label class="form-label">开始时间</label>
+          <input type="time" class="form-input" value="08:00" />
+        </div>
+        <div class="form-group">
+          <label class="form-label">结束时间</label>
+          <input type="time" class="form-input" value="21:00" />
+        </div>
+
+        <a href="person-types.html" class="btn-primary" style="display: block; text-align: center; margin-top: 24px; text-decoration: none;">保存修改</a>
+        <button class="btn-ghost danger" style="display: block; margin: 16px auto 0;" onclick="openDialog('dialog-delete')">删除此类型</button>
+      </div>
+
+      <div class="overlay"></div>
+
+      <!-- 删除确认 -->
+      <div class="dialog" id="dialog-delete">
+        <div class="dialog-title">删除类型</div>
+        <div class="dialog-body">
+          确定删除“成年男性”吗？相关历史记录将保留，但不再按此类型提醒。
+        </div>
+        <div class="dialog-actions">
+          <button class="btn-secondary" onclick="closeDialog('dialog-delete')">取消</button>
+          <a href="person-types.html" class="btn-primary" style="display: grid; place-items: center; text-decoration: none;">删除</a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script src="scripts.js?v=2"></script>
+</body>
+</html>

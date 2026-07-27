@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>喝了么 · 全屏提醒</title>
+
+<link rel="stylesheet" href="styles.css?v=2" />
+</head>
+<body>
+<div class="phone-stage">
+  <div class="phone">
+    <div class="phone-frame">
+
+      <div class="status-bar">
+        <span>15:00</span>
+        <div class="right"><span>5G</span><span class="dot"></span><span>100%</span></div>
+      </div>
+
+      <div class="fullscreen">
+        <div class="hero-label">— Reminder —</div>
+        <div class="display">250<span class="small">ml</span></div>
+        <p class="quote">"该喝水啦，别让身体喊渴。"</p>
+        <p class="meta">03 · 12 · 15:00</p>
+
+        <button class="btn-primary" style="width: 220px; margin-bottom: 12px;" onclick="openDialog('dialog-celebrate')">干杯</button>
+        <a href="index.html" class="btn-ghost" style="display: block; text-align: center;">10 分钟后再提醒</a>
+      </div>
+
+      <div class="overlay"></div>
+
+      <!-- 达标庆祝 -->
+      <div class="dialog" id="dialog-celebrate">
+        <div class="dialog-title" style="text-align: center; font-family: var(--font-en); font-style: italic; font-size: 32px;">Bravo.</div>
+        <div class="dialog-body" style="text-align: center;">
+          今日目标 2500ml 已达成。<br>连续 7 天。
+        </div>
+        <a href="index.html" class="btn-primary" style="display: block; text-align: center; text-decoration: none;">收下这份奖励</a>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script src="scripts.js?v=2"></script>
+</body>
+</html>

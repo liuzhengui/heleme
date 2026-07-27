@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/card_background"
+    android:orientation="vertical"
+    android:padding="@dimen/spacing_lg">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="选择饮水量"
+        android:textColor="@color/text_primary"
+        android:textSize="20sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/spacing_xs"
+        android:text="快捷选择常用容量"
+        android:textColor="@color/text_secondary"
+        android:textSize="14sp" />
+
+    <com.google.android.material.chip.ChipGroup
+        android:id="@+id/chipGroupAmounts"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/spacing_md"
+        app:singleSelection="true">
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chip150"
+            style="@style/BlackWhiteChip"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="150ml" />
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chip200"
+            style="@style/BlackWhiteChip"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="200ml" />
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chip250"
+            style="@style/BlackWhiteChip"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="250ml" />
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chip500"
+            style="@style/BlackWhiteChip"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="500ml" />
+
+    </com.google.android.material.chip.ChipGroup>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="@dimen/spacing_md"
+        android:layout_marginBottom="@dimen/spacing_md"
+        android:background="@color/divider" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/tilCustomAmount"
+        style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="自定义饮水量 (ml)">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/etCustomAmount"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="number"
+            android:text="200" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnConfirmDrink"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:layout_marginTop="@dimen/spacing_md"
+        android:backgroundTint="#111111"
+        android:text="确认记录"
+        app:cornerRadius="16dp" />
+
+</LinearLayout>
