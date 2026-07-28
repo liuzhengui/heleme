@@ -51,6 +51,13 @@ class FullscreenReminderActivity : AppCompatActivity() {
         "记得喝水"
     )
 
+    /**
+     * 标记本次 finish 是否由用户处理（喝了/稍后/完成）触发
+     * 只有用户主动处理时才在 onDestroy 中取消通知，
+     * 避免因「全屏提醒开关被关闭」导致 Activity 立即 finish 时把通知栏通知也误清掉
+     */
+    private var userHandled: Boolean = false
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -92,6 +99,7 @@ class FullscreenReminderActivity : AppCompatActivity() {
 
         binding.btnDrinkNow.setOnClickListener {
             Log.i(TAG, "▶ 用户点击「喝了」按钮")
+            userHandled = true
             CoroutineScope(Dispatchers.IO).launch {
                 val typeId = PreferenceManager.getCurrentTypeId(this@FullscreenReminderActivity)
                 val db = (application as com.zhengui.waterreminder.App).database
@@ -144,6 +152,7 @@ class FullscreenReminderActivity : AppCompatActivity() {
 
         binding.btnDismiss.setOnClickListener {
             Log.i(TAG, "▶ 用户点击「稍后」按钮, 不调度新提醒")
+            userHandled = true
             finish()
         }
     }
@@ -157,9 +166,11 @@ class FullscreenReminderActivity : AppCompatActivity() {
         binding.btnDismiss.text = "继续记录"
 
         binding.btnDrinkNow.setOnClickListener {
+            userHandled = true
             finish()
         }
         binding.btnDismiss.setOnClickListener {
+            userHandled = true
             finish()
         }
     }
@@ -174,8 +185,13 @@ class FullscreenReminderActivity : AppCompatActivity() {
     }
 
     override fun onDestroy() {
-        val nm = getSystemService(Context.NOTIFICATION_SERVICE) as android.app.NotificationManager
-        nm.cancel(NotificationHelper.REMINDER_NOTIFICATION_ID)
+        // 仅在用户主动处理（点了喝了/稍后/完成/继续记录）时才清掉通知栏通知。
+        // 当 onCreate 检测到全屏提醒开关已关闭而立即 finish 时，不应清掉通知，
+        // 否则用户关闭全屏后大周期通知会在状态栏被立即消掉，导致后续看不到提醒。
+        if (userHandled) {
+            val nm = getSystemService(Context.NOTIFICATION_SERVICE) as android.app.NotificationManager
+            nm.cancel(NotificationHelper.REMINDER_NOTIFICATION_ID)
+        }
         super.onDestroy()
     }
 
