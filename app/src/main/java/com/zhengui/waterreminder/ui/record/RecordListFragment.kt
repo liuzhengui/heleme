@@ -99,10 +99,11 @@ class RecordListFragment : Fragment() {
                         binding.statisticsContainer.visibility = View.GONE
                         updateSummaryLabel(true)
                         updateRecordCount(viewModel.records.value?.size ?: 0)
+                        updateDateDisplay(viewModel.currentDate.value ?: Calendar.getInstance())
                     }
                     1 -> {
                         viewModel.switchToMonthView()
-                        binding.datePickerContainer.visibility = View.GONE
+                        binding.datePickerContainer.visibility = View.VISIBLE
                         binding.tvRecordCount.visibility = View.GONE
                         binding.recyclerRecords.visibility = View.GONE
                         binding.monthContainer.visibility = View.VISIBLE
@@ -111,6 +112,7 @@ class RecordListFragment : Fragment() {
                         binding.statisticsContainer.visibility = View.GONE
                         updateSummaryLabel(false)
                         renderMonthView()
+                        updateDateDisplay(viewModel.currentDate.value ?: Calendar.getInstance())
                     }
                     2 -> {
                         binding.datePickerContainer.visibility = View.GONE
@@ -193,6 +195,7 @@ class RecordListFragment : Fragment() {
             } else {
                 binding.recyclerRecords.adapter = monthAdapter
             }
+            updateDateDisplay(viewModel.currentDate.value ?: Calendar.getInstance())
         }
 
         viewModel.records.observe(viewLifecycleOwner) { records ->
@@ -268,7 +271,9 @@ class RecordListFragment : Fragment() {
     }
 
     private fun updateDateDisplay(cal: Calendar) {
-        binding.tvCurrentDate.text = if (viewModel.isDayView.value == true) dayFormat.format(cal.time) else monthFormat.format(cal.time)
+        val isDay = viewModel.isDayView.value == true
+        binding.tvDatePickerLabel.text = if (isDay) "Selected" else "Month"
+        binding.tvCurrentDate.text = if (isDay) dayFormat.format(cal.time) else monthFormat.format(cal.time)
     }
 
     private fun updateGoalStatus(total: Int, goal: Int) {
