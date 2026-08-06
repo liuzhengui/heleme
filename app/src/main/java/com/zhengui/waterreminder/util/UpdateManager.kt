@@ -28,7 +28,7 @@ object UpdateManager {
 
     // Gitee API 优先（国内访问更快），GitHub 作为 fallback
     private const val GITEE_API = "https://gitee.com/api/v5/repos/gui_1124/heleme/releases/latest"
-    private const val GITHUB_API = "https://api.github.com/repos/52uni/heleme/releases/latest"
+    private const val GITHUB_API = "https://api.github.com/repos/liuzhengui/heleme/releases/latest"
 
     data class UpdateInfo(
         val tagName: String,

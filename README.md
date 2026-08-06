@@ -4,7 +4,7 @@
 
 ## 下载
 
-最新 APK 请前往 [Releases](https://github.com/52uni/heleme/releases) 页面下载。
+最新 APK 请前往 [Releases](https://github.com/liuzhengui/heleme/releases) 页面下载。
 
 ## 功能
 

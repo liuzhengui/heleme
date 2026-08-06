@@ -31,7 +31,7 @@ class AboutActivity : AppCompatActivity() {
         binding.btnVersionHistory.setOnClickListener { showInfoDialog("版本历史", getString(R.string.about_version_history)) }
         binding.btnPrivacy.setOnClickListener { showInfoDialog("隐私政策", getPrivacyText()) }
         binding.btnDeveloper.setOnClickListener {
-            val intent = Intent(Intent.ACTION_VIEW, android.net.Uri.parse("https://github.com/52uni/heleme"))
+            val intent = Intent(Intent.ACTION_VIEW, android.net.Uri.parse("https://github.com/liuzhengui/heleme"))
             startActivity(intent)
         }
 
