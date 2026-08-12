@@ -12,6 +12,7 @@ object PreferenceManager {
     private const val KEY_FULLSCREEN_REMINDER_ENABLED = "fullscreen_reminder_enabled"
     private const val KEY_HAS_SEEN_SETUP_GUIDE = "has_seen_setup_guide"
     private const val KEY_ENCOURAGEMENT_ENABLED = "encouragement_enabled"
+    private const val KEY_SMALL_CYCLE_ENABLED = "small_cycle_enabled"
 
     fun isReminderEnabled(context: Context): Boolean {
         val prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
@@ -81,5 +82,15 @@ object PreferenceManager {
     fun setEncouragementEnabled(context: Context, enabled: Boolean) {
         val prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
         prefs.edit().putBoolean(KEY_ENCOURAGEMENT_ENABLED, enabled).apply()
+    }
+
+    fun isSmallCycleEnabled(context: Context): Boolean {
+        val prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+        return prefs.getBoolean(KEY_SMALL_CYCLE_ENABLED, true)
+    }
+
+    fun setSmallCycleEnabled(context: Context, enabled: Boolean) {
+        val prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+        prefs.edit().putBoolean(KEY_SMALL_CYCLE_ENABLED, enabled).apply()
     }
 }

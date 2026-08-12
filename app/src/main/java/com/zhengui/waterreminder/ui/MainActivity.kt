@@ -140,12 +140,14 @@ class MainActivity : AppCompatActivity() {
             tvSetupGuide.visibility = View.GONE
         }
 
-        // 自动启动未生效提示点击跳转设置
-        binding.drawerContent.tvAutoStartWarning.setOnClickListener {
-            openAutoStartSettings()
+        // 点击「自动启动」行弹窗说明
+        binding.drawerContent.layoutAutoStart.setOnClickListener {
+            androidx.appcompat.app.AlertDialog.Builder(this@MainActivity)
+                .setTitle("自动启动")
+                .setMessage("开启后，手机重启时应用可自动恢复喝水提醒调度。\n\n请前往 设置 → 应用 → 自启动，找到「喝了么」并允许。")
+                .setPositiveButton("知道了", null)
+                .show()
         }
-
-        updateAutoStartWarning()
     }
 
     private fun setupSwitches() {
@@ -170,7 +172,6 @@ class MainActivity : AppCompatActivity() {
                     requestAutoStartPermissions(this)
                 } else {
                     PreferenceManager.setAutoStartEnabled(this@MainActivity, false)
-                    updateAutoStartWarning()
                     Toast.makeText(this@MainActivity, "已关闭自动启动", Toast.LENGTH_SHORT).show()
                 }
             }
@@ -192,6 +193,29 @@ class MainActivity : AppCompatActivity() {
                 val msg = if (isChecked) "喝水鼓励已开启" else "喝水鼓励已关闭"
                 Toast.makeText(this@MainActivity, msg, Toast.LENGTH_SHORT).show()
             }
+        }
+
+        // 连续提醒（小周期循环提醒）开关：默认开启
+        binding.drawerContent.drawerSwitchSmallCycle.apply {
+            isChecked = PreferenceManager.isSmallCycleEnabled(this@MainActivity)
+            setOnCheckedChangeListener { _, isChecked ->
+                PreferenceManager.setSmallCycleEnabled(this@MainActivity, isChecked)
+                val msg = if (isChecked) "连续提醒已开启" else "连续提醒已关闭"
+                Toast.makeText(this@MainActivity, msg, Toast.LENGTH_SHORT).show()
+                if (!isChecked) {
+                    // 关闭时立即取消已有小周期闹钟，避免继续循环提醒
+                    ReminderScheduler.cancelSmallCycle(this@MainActivity)
+                }
+            }
+        }
+
+        // 点击「连续提醒」行弹窗说明含义
+        binding.drawerContent.layoutSmallCycle.setOnClickListener {
+            androidx.appcompat.app.AlertDialog.Builder(this@MainActivity)
+                .setTitle("连续提醒")
+                .setMessage("大周期提醒后，如果一直没有喝水打卡，每隔 5 分钟会再次提醒，直到打卡喝水或当日结束。\n\n关闭后，仅保留按间隔的大周期提醒，不再循环提醒。")
+                .setPositiveButton("知道了", null)
+                .show()
         }
     }
 
@@ -264,7 +288,6 @@ class MainActivity : AppCompatActivity() {
                     // 用户拒绝了或未授权，把开关设回 false
                     autoStartSwitch.isChecked = false
                     PreferenceManager.setAutoStartEnabled(this, false)
-                    updateAutoStartWarning()
                     Toast.makeText(this, "需要允许电池优化才能开启自动启动", Toast.LENGTH_SHORT).show()
                 }
             }
@@ -273,8 +296,6 @@ class MainActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        // 刷新自动启动未生效提示（用户可能从系统设置返回）
-        updateAutoStartWarning()
 
         // 从系统设置返回或应用从后台恢复时，若提醒已开启则重新调度闹钟，
         // 防止 OEM 系统清理导致闹钟被取消后无法恢复。
@@ -288,33 +309,6 @@ class MainActivity : AppCompatActivity() {
     private fun enableAutoStart(autoStartSwitch: SwitchMaterial) {
         // 用户已表达开启意愿，直接显示引导弹窗让用户去系统设置手动允许
         showAutoStartGuideDialog(autoStartSwitch)
-    }
-
-    /**
-     * 更新侧边栏自动启动提示。
-     * Android 没有统一 API 检测各厂商自启动权限，因此不再以电池优化状态作为判断依据，
-     * 仅提示用户需要手动在系统设置中允许自启动。
-     */
-    private fun updateAutoStartWarning() {
-        val warning = binding.drawerContent.tvAutoStartWarning
-        val userWantsAutoStart = PreferenceManager.isAutoStartEnabled(this)
-
-        if (userWantsAutoStart) {
-            warning.visibility = View.VISIBLE
-        } else {
-            warning.visibility = View.GONE
-        }
-    }
-
-    /**
-     * 检查是否可能已有自启动权限（通过检查电池优化白名单状态近似判断）
-     */
-    private fun hasAutoStartPermission(): Boolean {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            val powerManager = getSystemService(Context.POWER_SERVICE) as PowerManager
-            return powerManager.isIgnoringBatteryOptimizations(packageName)
-        }
-        return true
     }
 
     private fun showAutoStartGuideDialog(autoStartSwitch: SwitchMaterial) {
@@ -336,7 +330,6 @@ class MainActivity : AppCompatActivity() {
                 // 用户取消，恢复开关为关闭状态
                 autoStartSwitch.isChecked = false
                 PreferenceManager.setAutoStartEnabled(this, false)
-                updateAutoStartWarning()
                 Toast.makeText(this, "未开启自动启动，提醒可能无法稳定触发", Toast.LENGTH_LONG).show()
             }
             .setCancelable(false)

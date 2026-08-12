@@ -47,3 +47,5 @@ screen*.png
 window_*.xml
 window_dump*.xml
 crash_log.txt
+.claude/plans/myagents/
+myagents_files/

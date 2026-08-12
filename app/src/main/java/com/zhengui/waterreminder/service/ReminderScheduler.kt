@@ -198,7 +198,14 @@ object ReminderScheduler {
         val now = System.currentTimeMillis()
         val prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
         prefs.edit().putLong(KEY_LAST_INTERVAL_TRIGGER_TIME, now).apply()
-        Log.i(TAG, "▶ onIntervalReminderTriggered, triggerTime=${fmtTime(now)}, 启动小周期")
+        Log.i(TAG, "▶ onIntervalReminderTriggered, triggerTime=${fmtTime(now)}")
+
+        // 连续提醒（小周期）开关：关闭时不再进入 5 分钟循环提醒
+        if (!PreferenceManager.isSmallCycleEnabled(context)) {
+            Log.i(TAG, "连续提醒开关已关闭，跳过小周期循环提醒")
+            return
+        }
+        Log.i(TAG, "启动小周期")
         scheduleSmallCycle(context, suggestedAmount)
     }
 
@@ -209,6 +216,10 @@ object ReminderScheduler {
     fun scheduleSmallCycle(context: Context, suggestedAmount: Int = 200) {
         if (!isReminderEnabled(context)) {
             Log.i(TAG, "提醒总开关已关闭，跳过调度小周期")
+            return
+        }
+        if (!PreferenceManager.isSmallCycleEnabled(context)) {
+            Log.i(TAG, "连续提醒开关已关闭，跳过调度小周期")
             return
         }
         scope.launch {

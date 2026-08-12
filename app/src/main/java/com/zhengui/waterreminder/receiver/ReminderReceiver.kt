@@ -60,6 +60,12 @@ class ReminderReceiver : BroadcastReceiver() {
      * 小周期检查：判断用户是否已在提醒后喝了水
      */
     private fun handleSmallCycle(context: Context, suggestedAmount: Int, pendingResult: PendingResult) {
+        // 连续提醒（小周期）开关：关闭时直接忽略小周期触发，不再弹通知
+        if (!PreferenceManager.isSmallCycleEnabled(context)) {
+            Log.i(TAG, "连续提醒开关已关闭，忽略小周期触发")
+            pendingResult.finish()
+            return
+        }
         val lastDrinkTime = ReminderScheduler.getLastDrinkTime(context)
         val lastTriggerTime = ReminderScheduler.getLastIntervalTriggerTime(context)
         Log.i(TAG, "小周期检查: lastDrinkTime=$lastDrinkTime, lastTriggerTime=$lastTriggerTime, drink > trigger = ${lastDrinkTime > lastTriggerTime}")

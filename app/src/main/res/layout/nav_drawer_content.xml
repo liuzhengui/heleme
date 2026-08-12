@@ -82,8 +82,12 @@
         android:background="#E5E5E5" />
 
     <LinearLayout
+        android:id="@+id/layoutAutoStart"
         android:layout_width="match_parent"
         android:layout_height="56dp"
+        android:background="?attr/selectableItemBackground"
+        android:clickable="true"
+        android:focusable="true"
         android:gravity="center_vertical"
         android:orientation="horizontal">
 
@@ -110,20 +114,10 @@
 
     </LinearLayout>
 
-    <TextView
-        android:id="@+id/tvAutoStartWarning"
+    <View
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
-        android:background="#FFF8F0"
-        android:clickable="true"
-        android:focusable="true"
-        android:foreground="?attr/selectableItemBackground"
-        android:padding="10dp"
-        android:text="请前往系统设置 → 应用 → 自启动，找到「喝了么」并允许。点击打开设置"
-        android:textColor="#D35400"
-        android:textSize="11sp"
-        android:visibility="gone" />
+        android:layout_height="1dp"
+        android:background="#E5E5E5" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -135,7 +129,7 @@
             android:layout_width="24dp"
             android:layout_height="24dp"
             android:contentDescription="全屏提醒"
-            android:src="@drawable/ic_notification"
+            android:src="@drawable/ic_fullscreen"
             app:tint="#111111" />
 
         <TextView
@@ -169,7 +163,7 @@
             android:layout_width="24dp"
             android:layout_height="24dp"
             android:contentDescription="鼓励动画"
-            android:src="@drawable/ic_notification"
+            android:src="@drawable/ic_encourage"
             app:tint="#111111" />
 
         <TextView
@@ -183,6 +177,44 @@
 
         <com.google.android.material.switchmaterial.SwitchMaterial
             android:id="@+id/drawerSwitchEncouragement"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#E5E5E5" />
+
+    <LinearLayout
+        android:id="@+id/layoutSmallCycle"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:background="?attr/selectableItemBackground"
+        android:clickable="true"
+        android:focusable="true"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:contentDescription="连续提醒"
+            android:src="@drawable/ic_repeat"
+            app:tint="#111111" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_weight="1"
+            android:text="连续提醒"
+            android:textColor="#111111"
+            android:textSize="16sp" />
+
+        <com.google.android.material.switchmaterial.SwitchMaterial
+            android:id="@+id/drawerSwitchSmallCycle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 
