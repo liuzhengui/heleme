@@ -44,6 +44,7 @@ object ReminderScheduler {
     private const val REQUEST_CODE_SMALL_CYCLE = -1
     private const val REQUEST_CODE_ALARM_CLOCK = -2
     private const val KEY_LAST_INTERVAL_TRIGGER_TIME = "last_interval_trigger_time"
+    private const val KEY_NEXT_REMINDER_TIME = "next_reminder_time"
     const val SMALL_CYCLE_MINUTES = 5
 
     private fun isReminderEnabled(context: Context): Boolean =
@@ -58,17 +59,38 @@ object ReminderScheduler {
      * - 如果已过开始时间但还没到结束时间：从当前时间 + 间隔
      * - 打卡后调用时：从打卡时刻 + 间隔
      */
-    fun scheduleNextReminder(context: Context) {
+    fun scheduleNextReminder(context: Context, forceReschedule: Boolean = false) {
         if (!isReminderEnabled(context)) {
             Log.i(TAG, "提醒总开关已关闭，跳过调度间隔提醒")
             return
         }
-        Log.i(TAG, "▶ scheduleNextReminder 被调用, 调用栈: ${Thread.currentThread().stackTrace.slice(1..5).joinToString(" ← ") { "${it.className.substringAfterLast(".")}.${it.methodName}" }}")
+        Log.i(TAG, "▶ scheduleNextReminder 被调用(force=$forceReschedule), 调用栈: ${Thread.currentThread().stackTrace.slice(1..5).joinToString(" ← ") { "${it.className.substringAfterLast(".")}.${it.methodName}" }}")
         scope.launch {
             mutex.withLock {
             try {
-                // 先取消旧的间隔闹钟，防止重复调度（在同一锁内原子执行，避免竞态条件）
                 val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
+                val now = System.currentTimeMillis()
+
+                // 兜底恢复场景（解锁/开机/Worker/onResume 等）：若已排定未来的大周期闹钟，
+                // 保持原时间重新注册即可，绝不能重算为 now+interval。
+                // 否则每次解锁屏幕都会把大周期推迟到「解锁时刻+interval」，
+                // 用户频繁解锁时大周期永远不触发 → 关闭小周期后表现为「不再提醒」。
+                if (!forceReschedule) {
+                    val prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+                    val nextPlanned = prefs.getLong(KEY_NEXT_REMINDER_TIME, 0L)
+                    if (nextPlanned > now) {
+                        val db = (context.applicationContext as App).database
+                        val typeId = PreferenceManager.getCurrentTypeId(context)
+                        val type = db.personTypeDao().getById(typeId)
+                        val defaultAmount = type?.defaultAmountMl ?: 200
+                        Log.i(TAG, "存在未来计划 ${fmtTime(nextPlanned)}，保持原时间重新注册（不推迟）")
+                        scheduleAlarm(context, nextPlanned, defaultAmount)
+                        PreferenceManager.setReminderEnabled(context, true)
+                        return@withLock
+                    }
+                }
+
+                // 先取消旧的间隔闹钟，防止重复调度（在同一锁内原子执行，避免竞态条件）
                 val cancelIntent = Intent(context, ReminderReceiver::class.java)
                 val cancelPendingIntent = PendingIntent.getBroadcast(
                     context,
@@ -90,7 +112,6 @@ object ReminderScheduler {
                 val endHour = type?.notificationEndHour ?: 21
                 val endMinute = type?.notificationEndMinute ?: 0
 
-                val now = System.currentTimeMillis()
                 val triggerTime: Long
 
                 // 获取上次打卡时间
@@ -188,7 +209,8 @@ object ReminderScheduler {
         Log.i(TAG, "▶ scheduleAfterDrink 被调用, now=${fmtTime(now)}")
         setLastDrinkTime(context, now)
         cancelSmallCycle(context)
-        scheduleNextReminder(context)
+        // 打卡后必须强制重算（忽略已有的旧计划时间），从打卡时刻 + 间隔
+        scheduleNextReminder(context, forceReschedule = true)
     }
 
     /**
@@ -355,6 +377,11 @@ object ReminderScheduler {
             PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
         )
         scheduleExactAlarm(alarmManager, triggerTime, pendingIntent, context)
+        // 记录本次大周期的计划触发时间，供兜底恢复（解锁/开机/Worker/onResume）保持原时间，避免被推迟
+        context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+            .edit()
+            .putLong(KEY_NEXT_REMINDER_TIME, triggerTime)
+            .apply()
     }
 
     fun cancelReminder(context: Context) {
@@ -370,6 +397,10 @@ object ReminderScheduler {
                     PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
                 )
                 alarmManager.cancel(pendingIntent)
+                context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+                    .edit()
+                    .remove(KEY_NEXT_REMINDER_TIME)
+                    .apply()
                 Log.i(TAG, "已取消间隔提醒闹钟")
             }
         }
@@ -551,6 +582,12 @@ object ReminderScheduler {
                         PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
                     )
                     alarmManager.cancel(smallCyclePendingIntent)
+
+                    // 清除大周期计划时间记录，避免兜底恢复时重新注册已取消的闹钟
+                    context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+                        .edit()
+                        .remove(KEY_NEXT_REMINDER_TIME)
+                        .apply()
                     Log.i(TAG, "已取消所有提醒闹钟，共 ${allTimes.size} 个固定时间")
                 } catch (e: Exception) {
                     Log.e(TAG, "取消所有提醒失败", e)

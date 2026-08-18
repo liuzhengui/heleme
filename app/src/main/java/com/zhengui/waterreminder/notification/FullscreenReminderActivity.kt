@@ -132,7 +132,7 @@ class FullscreenReminderActivity : AppCompatActivity() {
                         if (PreferenceManager.isReminderEnabled(this@FullscreenReminderActivity)) {
                             Log.i(TAG, "达标但仍调度下次提醒")
                             CoroutineScope(Dispatchers.IO).launch {
-                                ReminderScheduler.scheduleNextReminder(this@FullscreenReminderActivity)
+                                ReminderScheduler.scheduleNextReminder(this@FullscreenReminderActivity, forceReschedule = true)
                             }
                         }
                         showGoalCelebration()
@@ -140,7 +140,7 @@ class FullscreenReminderActivity : AppCompatActivity() {
                         if (PreferenceManager.isReminderEnabled(this@FullscreenReminderActivity)) {
                             Log.i(TAG, "未达标, 调度下次提醒")
                             CoroutineScope(Dispatchers.IO).launch {
-                                ReminderScheduler.scheduleNextReminder(this@FullscreenReminderActivity)
+                                ReminderScheduler.scheduleNextReminder(this@FullscreenReminderActivity, forceReschedule = true)
                             }
                         }
                         finish()

@@ -12,8 +12,8 @@ android {
         applicationId = "com.zhengui.waterreminder"
         minSdk = 24
         targetSdk = 34
-        versionCode = 220
-        versionName = "2.2.0"
+        versionCode = 221
+        versionName = "2.2.1"
     }
 
     buildTypes {

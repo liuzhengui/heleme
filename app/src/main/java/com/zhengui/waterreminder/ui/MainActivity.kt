@@ -248,7 +248,7 @@ class MainActivity : AppCompatActivity() {
         ReminderScheduler.cancelSmallCycle(this)
         ReminderScheduler.cancelAllReminders(this)
         // 然后重新调度
-        ReminderScheduler.scheduleNextReminder(this)
+        ReminderScheduler.scheduleNextReminder(this, forceReschedule = true)
         ReminderScheduler.scheduleAllReminders(this)
         // 注册 WorkManager 兜底检查任务
         AlarmCheckWorker.enqueue(this)

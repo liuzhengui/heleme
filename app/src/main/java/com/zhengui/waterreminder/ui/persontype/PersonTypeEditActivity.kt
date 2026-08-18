@@ -121,7 +121,7 @@ class PersonTypeEditActivity : AppCompatActivity() {
         ReminderScheduler.setLastDrinkTime(this, 0L)
         ReminderScheduler.cancelReminder(this)
         ReminderScheduler.cancelSmallCycle(this)
-        ReminderScheduler.scheduleNextReminder(this)
+        ReminderScheduler.scheduleNextReminder(this, forceReschedule = true)
     }
 
     private fun showTimePicker(isStart: Boolean) {

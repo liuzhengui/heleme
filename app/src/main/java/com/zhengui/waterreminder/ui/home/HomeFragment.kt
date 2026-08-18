@@ -220,7 +220,7 @@ class HomeFragment : Fragment() {
                     ReminderScheduler.setLastDrinkTime(requireContext(), 0L)
                     ReminderScheduler.cancelReminder(requireContext())
                     ReminderScheduler.cancelSmallCycle(requireContext())
-                    ReminderScheduler.scheduleNextReminder(requireContext())
+                    ReminderScheduler.scheduleNextReminder(requireContext(), forceReschedule = true)
                 }
                 bottomSheet.dismiss()
             },
